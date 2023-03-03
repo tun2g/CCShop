@@ -1,0 +1,16 @@
+.container {
+    margin-top: var(--header-height);
+    margin-bottom: var(--header-height);
+    display: flex;
+}
+
+.content {
+    margin-left: var(--sidebar-width);
+    width: 100%;
+}
+
+@media (max-width: 991.98px) {
+    .content {
+        margin-left: 0;
+    }
+}

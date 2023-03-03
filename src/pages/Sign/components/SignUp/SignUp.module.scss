@@ -1,0 +1,142 @@
+.login {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper {
+    animation: opacityChange 0.3s linear;
+    width: 600px;
+    height: 600px;
+    padding: 10px;
+    background-color: rgb(255, 255, 255, 0.6);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h2 {
+        font-size: 40px;
+        font-weight: 500;
+        -webkit-text-fill-color: white;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: var(--primary-clr);
+    }
+}
+
+.content {
+    position: relative;
+    padding: 20px 60px;
+    label {
+        font-size: 15px;
+        font-weight: 400;
+        color: rgb(112, 110, 110);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    p {
+        color: red;
+        font-size: 14px;
+        position: absolute;
+    }
+}
+
+.input-error {
+    position: relative;
+    margin-bottom: 20px;
+    input {
+        width: 100%;
+        font-size: 18px;
+        padding: 8px;
+        border: 2px solid #ccc;
+        outline: none;
+        border-radius: 8px;
+
+        &::placeholder {
+            font-size: 16px;
+        }
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+
+.submit {
+    background-color: var(--primary-clr);
+    font-size: 18px;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+.signup {
+    user-select: none;
+    margin-top: 20px;
+    padding: 8px 0;
+    font-size: 15px;
+    border: none;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    &:hover {
+        opacity: 0.7;
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .wrapper {
+        width: 350px;
+        height: 500px;
+    }
+
+    .content {
+        padding: 8px 16px;
+    }
+
+    .input-error {
+        input {
+            font-size: 14px;
+            line-height: 14px;
+        }
+    }
+
+    .submit {
+        font-size: 14px;
+    }
+
+    .title {
+        margin-bottom: 40px;
+        h2 {
+            font-size: 30px;
+        }
+    }
+
+    .google {
+        span {
+            font-size: 14px;
+        }
+    }
+
+    .signup {
+        font-size: 14px;
+    }
+}

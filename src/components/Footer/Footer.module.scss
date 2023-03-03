@@ -1,0 +1,38 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    height: var(--header-height);
+    background-color: var(--primary-clr);
+    padding: 0 20px;
+    display: flex;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+}
+
+.footer-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    color: white;
+    font-size: 14px;
+}
+
+@media (max-width: 991.98px) {
+    .footer {
+        display: none;
+        z-index: unset;
+    }
+}
