@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
-const SERVER_AUTH_URI="http://localhost:20617"
 function SignUp({ handleChangeSign }) {
     const {
         register,
@@ -21,7 +20,7 @@ function SignUp({ handleChangeSign }) {
 
     const onSubmit = (user) => {
         console.log(user)
-        axios.post(`${SERVER_AUTH_URI}/user/register`, user,{
+        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}user/register`, user,{
             headers: {
             'Content-Type': 'application/json'
             },

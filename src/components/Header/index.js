@@ -34,7 +34,7 @@ function Header() {
                 {
                     optionList.map((item) => (
                         <NavLink
-                            key={item.id}
+                            key={item.name}
                             className={
                                 location.pathname === item.path
                                     ? cx('header-option-item', 'active')

@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const cx = classNames.bind(styles);
-const SERVER_AUTH_URI="http://localhost:20617"
 function SignIn(props) {
 
     const {
@@ -18,7 +17,7 @@ function SignIn(props) {
     } = useForm();
 
     const onSubmit = (user) => {
-        axios.post(`${SERVER_AUTH_URI}/user/login`, user,{
+        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}user/login`, user,{
             headers: {
             'Content-Type': 'application/json'
             },
@@ -26,6 +25,9 @@ function SignIn(props) {
         })
         .then(response => {
             console.log(response.data);
+            
+            // Put token on cookie
+            document.cookie=`token=${response.data.token}; path=/;`
         })
         .catch(error => {
             console.error(error);
