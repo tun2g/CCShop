@@ -20,7 +20,7 @@ function SignUp({ handleChangeSign }) {
 
     const onSubmit = (user) => {
         console.log(user)
-        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}user/register`, user,{
+        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/register`, user,{
             headers: {
             'Content-Type': 'application/json'
             },

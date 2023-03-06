@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import { useEffect,useState } from 'react';
 import axios from 'axios'
 
+import { setInRedis } from '../../../../utils';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const cx = classNames.bind(styles);
 function SignIn(props) {
@@ -17,17 +17,18 @@ function SignIn(props) {
     } = useForm();
 
     const onSubmit = (user) => {
-        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}user/login`, user,{
+        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/login`, user,{
             headers: {
             'Content-Type': 'application/json'
             },
             timeout: 5000
         })
         .then(response => {
-            console.log(response.data);
-            
-            // Put token on cookie
-            document.cookie=`token=${response.data.token}; path=/;`
+            //Put user on cookie
+            // document.cookie=`token=${response.data.token}; path=/;`
+            console.log(response.data.user)
+            document.cookie=`email=${response.data.user?.email}; path=/;`
+            setInRedis({value:response.data.token,key:response.data.user?.email})  
         })
         .catch(error => {
             console.error(error);
