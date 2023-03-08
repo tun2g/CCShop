@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 // use Cooke for store Token 
 const getCookie = (name) => {
     const value = `; ${document.cookie}`;
@@ -31,10 +30,16 @@ const setInRedis=(data)=>{
 }
 
 // JWT 
-const getResponseInvalidToken=()=>{
-  axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/refresh`)
+const getResponseInvalidToken=(callback)=>{
+  axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/refresh/refresh`,{},{
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,    
+  })
   .then((response) => {
-    console.log(response)
+    // console.log(response.data.accessToken)
+    callback(response.data.accessToken)
   })
   .catch((error) => {
     console.error(error);

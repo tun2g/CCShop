@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useEffect,useState } from 'react';
 import axios from 'axios'
 
-import { setInRedis } from '../../../../utils';
+import { setInRedis } from '../../../../utils/service';
 import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles);
@@ -19,8 +19,9 @@ function SignIn(props) {
     const onSubmit = (user) => {
         axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/login`, user,{
             headers: {
-            'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
+            withCredentials: true,
             timeout: 5000
         })
         .then(response => {

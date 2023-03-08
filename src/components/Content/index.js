@@ -1,9 +1,10 @@
 import classNames from 'classnames/bind';
 import styles from './Content.module.scss';
 import { Container, Row } from 'react-bootstrap';
-import axios from 'axios';
+import axios from '../../utils/axios.config';
+// import axios from 'axios';
 import { useEffect,memo, useState } from 'react';
-import { getCookie, getInRedis } from '../../utils';
+import { getCookie, getInRedis } from '../../utils/service';
 
 const cx = classNames.bind(styles);
 const Content = () => {
@@ -28,7 +29,7 @@ const Content = () => {
                 console.log(response)
             })
             .catch((error) => {
-                console.log(error);
+                //console.log(error);
             });
     },[token])
 
