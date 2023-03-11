@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from "./axios.config";
 
-// use Cooke for store Token 
+// use Cookie for store Token 
 const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -10,8 +10,13 @@ const getCookie = (name) => {
 }
 
 // use Redis for store Token
-const getInRedis=(data,callback)=>{
-  axios.post(`${process.env.REACT_APP_SERVER_API_URI}/redis/get`,data)
+const getInRedis=(callback)=>{
+  axios.get(`${process.env.REACT_APP_SERVER_AUTH_URI}/redis/get`,{
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    withCredentials: true,    
+  })
   .then((response) => {
     callback(response.data.token)
   })
@@ -20,29 +25,31 @@ const getInRedis=(data,callback)=>{
   });    
 }
 const setInRedis=(data)=>{
-  axios.post(`${process.env.REACT_APP_SERVER_API_URI}/redis/set`,data)
+  axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/redis/set`,data,{
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    withCredentials: true,    
+  })
   .then((response) => {
     console.log(response)
   })
   .catch((error) => {
-    console.error(error);
+    console.log(error);
   });    
 }
 
 // JWT 
 const getResponseInvalidToken=(callback)=>{
-  axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/refresh/refresh`,{},{
-    headers: {
-      'Content-Type': 'application/json',
-    },
+  axios.get(`${process.env.REACT_APP_SERVER_AUTH_URI}/refresh/refresh`,{
     withCredentials: true,    
   })
   .then((response) => {
-    // console.log(response.data.accessToken)
-    callback(response.data.accessToken)
+    console.log("re/re",response)
+    // callback(response.data.accessToken)
   })
   .catch((error) => {
-    console.error(error);
+    console.log(error);
   }); 
 }
 export {getCookie,getResponseInvalidToken,getInRedis,setInRedis}

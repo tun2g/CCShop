@@ -26,10 +26,8 @@ function SignIn(props) {
         })
         .then(response => {
             //Put user on cookie
-            // document.cookie=`token=${response.data.token}; path=/;`
-            console.log(response.data.user)
-            document.cookie=`email=${response.data.user?.email}; path=/;`
-            setInRedis({value:response.data.token,key:response.data.user?.email})  
+            console.log(response.data)
+            setInRedis({value:response.data.token})  
         })
         .catch(error => {
             console.error(error);

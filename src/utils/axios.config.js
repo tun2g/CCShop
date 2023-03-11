@@ -7,12 +7,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    return response.data;
+    return response;
   },
   (error) => {
     if(error.message==="Request failed with status code 403"){
-          getResponseInvalidToken((newAccessToken)=>{
-          setInRedis({value:newAccessToken,key:getCookie('email')})  
+          getResponseInvalidToken((data)=>{
+          setInRedis({value:data.newAccessToken,key:data.email})  
         })
     }
     console.log(error);

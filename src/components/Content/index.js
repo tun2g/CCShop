@@ -9,24 +9,27 @@ import { getCookie, getInRedis } from '../../utils/service';
 const cx = classNames.bind(styles);
 const Content = () => {
     //Use Cookie
-    const email=getCookie('email')
+    
+    // const email=getCookie('email')
     // const token=getCookie('token')
-
-    const [token,setToken]=useState(null)
-    getInRedis({key:email},(token)=>{
+    const [token,setToken]=useState("default")
+    
+    getInRedis((token)=>{
         setToken(token)
     })
+    console.log("token content",token)
     
     useEffect(()=>{
-
-        console.log(token)
-        axios.get(`${process.env.REACT_APP_SERVER_API_URI}/post/all`, {
+        // get Token from redis
+        //client save user.email in cookie by key email
+        //server save accessToken in redis by key user.email
+        token&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/post/all`, {
             headers: {
                 token: `Bearer ${token}`,
             },
             })
             .then((response) => {
-                console.log(response)
+                console.log(response.data)
             })
             .catch((error) => {
                 //console.log(error);
