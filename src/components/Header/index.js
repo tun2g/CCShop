@@ -24,6 +24,11 @@ function Header() {
             path: '/sign',
             icon: RiLoginCircleLine,
         },
+        {
+            name: 'Log out',
+            path: '/sign',
+        }
+        
     ];
 
     const location=useLocation()

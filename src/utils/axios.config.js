@@ -12,7 +12,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if(error.message==="Request failed with status code 403"){
           getResponseInvalidToken((data)=>{
-          setInRedis({value:data.newAccessToken,key:data.email})  
+          setInRedis({value:data.accessToken})  
         })
     }
     console.log(error);

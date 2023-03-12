@@ -46,7 +46,7 @@ const getResponseInvalidToken=(callback)=>{
   })
   .then((response) => {
     console.log("re/re",response)
-    // callback(response.data.accessToken)
+    callback(response.data)
   })
   .catch((error) => {
     console.log(error);
