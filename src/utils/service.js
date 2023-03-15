@@ -52,4 +52,17 @@ const getResponseInvalidToken=(callback)=>{
     console.log(error);
   }); 
 }
-export {getCookie,getResponseInvalidToken,getInRedis,setInRedis}
+
+const logOut=(e)=>{
+  e.preventDefault()
+  axios.get(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/logout`,{
+    withCredentials: true,    
+  })
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error);
+  }); 
+}
+export {getCookie,getResponseInvalidToken,getInRedis,setInRedis,logOut}

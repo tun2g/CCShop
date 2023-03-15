@@ -27,7 +27,7 @@ function SignUp({ handleChangeSign }) {
             timeout: 5000
         })
         .then(response => {
-            console.log(response.data);
+            console.log("res",response.data.element)
         })
         .catch(error => {
             console.error(error);
@@ -105,9 +105,7 @@ function SignUp({ handleChangeSign }) {
                         <button className={cx('submit')} type="submit">
                             ĐĂNG KÝ
                         </button>
-                        {/* <button onClick={handleChangeSign} className={cx('signup')}>
-                            Bạn đã có tài khoản?
-                        </button> */}
+                        
                     </form>
                 </div>
             </div>

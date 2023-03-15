@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation} from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
 import { RiLoginCircleLine } from 'react-icons/ri';
 import { BiStore } from 'react-icons/bi';
+import { logOut } from '../../utils/service';
 
 const cx = classNames.bind(styles);
 
@@ -12,17 +13,14 @@ function Header() {
         {
             name: 'Home',
             path: '/',
-            icon: FaHome,
         },
         {
             name: 'History',
             path: '/sales',
-            icon: BiStore,
         },
         {
             name: 'Login',
             path: '/sign',
-            icon: RiLoginCircleLine,
         },
         {
             name: 'Log out',
@@ -38,8 +36,23 @@ function Header() {
             <div className={cx('header-option')}>
                 {
                     optionList.map((item) => (
+                        item.name!=='Log out' 
+                        ?
                         <NavLink
                             key={item.name}
+                            className={
+                                location.pathname === item.path
+                                    ? cx('header-option-item', 'active')
+                                    : cx('header-option-item')
+                            }
+                            to={item.path}
+                        >
+                            <span>{item.name}</span>
+                        </NavLink>
+                        :
+                        <NavLink
+                            key={item.name}
+                            onClick={(e)=>logOut(e)}
                             className={
                                 location.pathname === item.path
                                     ? cx('header-option-item', 'active')
