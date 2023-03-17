@@ -14,6 +14,7 @@ function SignIn(props) {
         register,
         handleSubmit,
         formState: { errors },
+        setError
     } = useForm();
 
     const onSubmit = (user) => {
@@ -25,9 +26,16 @@ function SignIn(props) {
             timeout: 5000
         })
         .then(response => {
-            //Put user on cookie
             console.log(response.data)
-            setInRedis({value:response.data.token})  
+            if(response.data.status===401 || response.data.status===500){
+                props.handleChangeEmail(user.email)
+                setError("password", {
+                type: "errorPassword",
+                message: "Sai mật khẩu hoặc tài khoản",
+                });
+            }
+            
+            response.data.token&&setInRedis({value:response.data.token})  
         })
         .catch(error => {
             console.error(error);
@@ -65,6 +73,8 @@ function SignIn(props) {
                                     ? 'Không được bỏ trống'
                                     : errors.password?.type === 'minLength'
                                     ? 'Mật khẩu phải có từ 6 kí tự'
+                                    :errors.password?.type==='errorPassword'
+                                    ? "Sai tài khoản hoặc mật khẩu"
                                     : ''}
                             </p>
                         </div>
@@ -72,8 +82,11 @@ function SignIn(props) {
                             ĐĂNG NHẬP
                         </button>
                         <div className={cx('change-signup')} onClick={()=>{
-                            props.handleChangeSign(false)
+                            props.handleChangeSign(2)
                         }}>bạn chưa có tài khoản?</div>
+                        <div className={cx('change-signup')} onClick={()=>{
+                            props.handleChangeSign(3)
+                        }}>Quên mật khẩu</div>
                     </form>
                 </div>
             </div>

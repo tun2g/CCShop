@@ -37,6 +37,8 @@ function SignUp({ handleChangeSign }) {
     return (
         <div className={cx('login')}>
             <div className={cx('wrapper')}>
+
+                
                 <div className={cx('title')}>
                     <h2>ĐĂNG KÝ</h2>
                 </div>

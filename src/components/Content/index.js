@@ -8,11 +8,7 @@ import { getCookie, getInRedis } from '../../utils/service';
 
 const cx = classNames.bind(styles);
 const Content = () => {
-    //Use Cookie
     
-    // const email=getCookie('email')
-    // const token=getCookie('token')
-
     const [token,setToken]=useState("default")
     getInRedis((token)=>{
         setToken(token)
