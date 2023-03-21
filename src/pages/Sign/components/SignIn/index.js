@@ -3,13 +3,16 @@ import classNames from 'classnames/bind';
 import { useForm } from 'react-hook-form';
 import { useEffect,useState } from 'react';
 import axios from 'axios'
-
+import { useDispatch } from 'react-redux';
+import { setEmail } from '../../../../ReduxService/UserSlice';
 import { setInRedis } from '../../../../utils/service';
 import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles);
 function SignIn(props) {
+    const dispatch=useDispatch()
 
+    const [isForgot,setForgot]=useState(false)
     const {
         register,
         handleSubmit,
@@ -29,12 +32,13 @@ function SignIn(props) {
             console.log(response.data)
             if(response.data.status===401 || response.data.status===500){
                 props.handleChangeEmail(user.email)
+                setForgot(true)
                 setError("password", {
                 type: "errorPassword",
                 message: "Sai mật khẩu hoặc tài khoản",
                 });
             }
-            
+            response.data.token&&dispatch(setEmail(user.email))
             response.data.token&&setInRedis({value:response.data.token})  
         })
         .catch(error => {
@@ -84,9 +88,15 @@ function SignIn(props) {
                         <div className={cx('change-signup')} onClick={()=>{
                             props.handleChangeSign(2)
                         }}>bạn chưa có tài khoản?</div>
+                        
+                        {
+                        !isForgot
+                        ? ''
+                        :
                         <div className={cx('change-signup')} onClick={()=>{
                             props.handleChangeSign(3)
                         }}>Quên mật khẩu</div>
+                        }
                     </form>
                 </div>
             </div>

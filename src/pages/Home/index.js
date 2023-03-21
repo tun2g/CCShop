@@ -9,7 +9,6 @@ const Home = () => {
     return (
         <div className={cx('wrap')}>
             <div className={cx('Home')}>
-                Home
                 <Content/>
             </div>    
         </div>

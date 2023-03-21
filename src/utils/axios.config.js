@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { getCookie, getResponseInvalidToken,setInRedis } from './service';
+import { useDispatch } from 'react-redux';
+import { setEmail } from '../ReduxService/UserSlice';
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API_URI,
 });
+
 
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -11,8 +14,8 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if(error.message==="Request failed with status code 403"){
-          getResponseInvalidToken((data)=>{
-          data.accessToken&&setInRedis({value:data.accessToken})  
+      getResponseInvalidToken((data)=>{
+        data.accessToken&&setInRedis({value:data.accessToken})  
         })
     }
     console.log(error);

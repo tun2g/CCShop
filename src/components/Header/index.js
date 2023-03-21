@@ -1,9 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Link, NavLink, useLocation} from 'react-router-dom';
-import { FaHome } from 'react-icons/fa';
-import { RiLoginCircleLine } from 'react-icons/ri';
-import { BiStore } from 'react-icons/bi';
 import { logOut } from '../../utils/service';
 
 const cx = classNames.bind(styles);
@@ -11,23 +8,31 @@ const cx = classNames.bind(styles);
 function Header() {
     const optionList = [
         {
-            name: 'Home',
+            name: 'Trang chủ',
             path: '/',
         },
         {
-            name: 'History',
+            name: '???',
             path: '/sales',
         },
+        
         {
-            name: 'Login',
+            name: 'Đăng Xuất',
             path: '/sign',
         },
-        {
-            name: 'Log out',
-            path: '/sign',
-        }
+       
         
     ];
+    const optionrightList=[
+        {
+            name: 'Kênh người bán',
+            path: '/shop'
+        },
+        {
+            name: 'Đăng Nhập',
+            path: '/sign',
+        },
+    ]
 
     const location=useLocation()
 
@@ -36,8 +41,7 @@ function Header() {
             <div className={cx('header-option')}>
                 {
                     optionList.map((item) => (
-                        item.name!=='Log out' 
-                        ?
+                        item.name==='Đăng Xuất'?
                         <NavLink
                             key={item.name}
                             className={
@@ -45,6 +49,7 @@ function Header() {
                                     ? cx('header-option-item', 'active')
                                     : cx('header-option-item')
                             }
+                            onClick={logOut}
                             to={item.path}
                         >
                             <span>{item.name}</span>
@@ -52,7 +57,6 @@ function Header() {
                         :
                         <NavLink
                             key={item.name}
-                            onClick={(e)=>logOut(e)}
                             className={
                                 location.pathname === item.path
                                     ? cx('header-option-item', 'active')
@@ -62,6 +66,28 @@ function Header() {
                         >
                             <span>{item.name}</span>
                         </NavLink>
+                        
+                        
+                    ))
+                }
+            </div>
+            <div className={cx('header-option')}>
+                {
+                    optionrightList.map((item) => (
+                        
+                        <NavLink
+                            key={item.name}
+                            className={
+                                location.pathname === item.path
+                                    ? cx('header-option-item', 'active')
+                                    : cx('header-option-item')
+                            }
+                            to={item.path}
+                        >
+                            <span>{item.name}</span>
+                        </NavLink>
+                        
+                        
                     ))
                 }
             </div>
