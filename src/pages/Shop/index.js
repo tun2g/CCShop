@@ -7,12 +7,13 @@ import RegisterShop from '../../components/RegisterShop';
 import { selectEmail } from '../../ReduxService/UserSlice';
 import axios from 'axios';
 import PostProduct from '../../components/PostProduct';
-
+import { useLocation } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 const Shop = () => {
     const email = useSelector(selectEmail)
     const [isShop,setIsShop]=useState(false)
+
     useEffect(()=>{
         email&&axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/is-shop`,{email},{
             headers: {

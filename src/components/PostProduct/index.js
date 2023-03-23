@@ -34,6 +34,7 @@ function PostProduct() {
     
     const onSubmit = (product) => {
         product.file=imagePath
+        product.email=email
         axios.post(`${process.env.REACT_APP_SERVER_API_URI}/product/upload`, product,{
             headers: {
             'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ function PostProduct() {
                                 })}
                             />
                             <p>
-                                {errors?.desciption?.type === 'required'
+                                {errors?.description?.type === 'required'
                                     ? 'Không được bỏ trống'
                                     : ''}
                             </p>

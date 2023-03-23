@@ -1,15 +1,17 @@
 import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 import Footer from '../../components/Footer';
 import classNames from 'classnames/bind';
-import styles from './DefaultLayout.module.scss';
+import styles from './ShopLayout.module.scss';
 
 const cx = classNames.bind(styles);
 
-function DefaultLayout({ children }) {
+function ShopLayout({ children }) {
     return (
         <>
             <Header />
             <div className={cx('container')}>
+                <Sidebar />
                 <div className={cx('content')}>{children}</div>
             </div>
             <Footer />
@@ -17,4 +19,4 @@ function DefaultLayout({ children }) {
     );
 }
 
-export default DefaultLayout;
+export default ShopLayout;

@@ -31,7 +31,7 @@ function SignIn(props) {
         .then(response => {
             console.log(response.data)
             if(response.data.status===401 || response.data.status===500){
-                props.handleChangeEmail(user.email)
+                setEmail(user.email)
                 setForgot(true)
                 setError("password", {
                 type: "errorPassword",

@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { createRef } from 'react';
 import { toast } from 'react-toastify';
-
+import { useSelector } from 'react-redux';
+import { selectEmail } from '../../../../ReduxService/UserSlice';
 const cx = classNames.bind(styles);
 function ForgotPassword(props) {
     const {
@@ -15,6 +16,7 @@ function ForgotPassword(props) {
         formState: { errors },
     } = useForm();
     const [isVerified,setVefiry]=useState(false)
+    const email=useSelector(selectEmail)
 
     const password = useRef({});
     password.current = watch('password', '');
@@ -44,7 +46,6 @@ function ForgotPassword(props) {
     };
 
     //set private email
-    const email = props.email;
     let [username, domain] = email.split("@"); // tách thành username và domain
     let hidden = '*'.repeat(username.length-4) 
     let newUsername = username.slice(0, 2) + hidden + username.slice(-2); // thay đổi username
@@ -63,7 +64,7 @@ function ForgotPassword(props) {
 
     // send otp code to user email
     const handleOnClick=()=>{
-        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/verify/send-otp`,{email:props.email},
+        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/verify/send-otp`,{email},
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ function ForgotPassword(props) {
     const onSubmit = (user) => {
         console.log(user)
         axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/reset-password`, {
-            email:props.email,
+            email:email,
             password:user.password
         },
         {

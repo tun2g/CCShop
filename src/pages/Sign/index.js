@@ -12,27 +12,24 @@ const cx = classNames.bind(styles);
 
 function Sign() {
     const [isSignIn, setIsSignIn] = useState(1);
-    const [email,setEmail]=useState();
     const handleChangeSign = (num) => {
         setIsSignIn(num);
     };
-    const handleChangeEmail=(email)=>{
-        setEmail(email)
-    }
+
     
     return (
         <div className={cx('wrapper')}>
             <div className={cx('wrapper-main')}>
                 <div className={cx('sign')}>
                     {isSignIn===1 ? (
-                        <SignIn handleChangeSign={handleChangeSign} handleChangeEmail={handleChangeEmail}/>
+                        <SignIn handleChangeSign={handleChangeSign} />
                     ) : 
                     isSignIn===2?
                     (
                         <SignUp handleChangeSign={handleChangeSign} />
                     )
                     :
-                    <ForgotPassword handleChangeSign={handleChangeSign} handleChangeEmail={handleChangeEmail} email={email}/>
+                    <ForgotPassword handleChangeSign={handleChangeSign} />
                 }
                 </div>
             </div>

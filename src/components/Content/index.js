@@ -20,7 +20,7 @@ const Content = () => {
     
     useEffect(()=>{
         console.log(listProducts)
-        token&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/post/all`, {
+        token&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-all`, {
             headers: {
                 token: `Bearer ${token}`,
             }
@@ -38,12 +38,10 @@ const Content = () => {
         <div className={cx('Content')}>
             <div className={cx('content-menu')}>
                 <Container className={cx('menu')}>
-                    <Row>
                         {
-                        listProducts.map((element)=>{
-                            return <ProductCard key={element.product}/>
+                        listProducts?.map((element)=>{
+                            return <ProductCard key={element.key} product={element}/>
                         })}
-                    </Row>
                 </Container>
             </div>
         </div>

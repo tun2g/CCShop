@@ -1,11 +1,11 @@
 import styles from './RegisterShop.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef ,useState} from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { selectEmail } from '../../ReduxService/UserSlice';
-
+import { selectEmail,selectId } from '../../ReduxService/UserSlice';
+import Province from '../Province'
 const cx = classNames.bind(styles);
 function RegisterShop() {
     const {
@@ -14,10 +14,25 @@ function RegisterShop() {
         formState: { errors },
     } = useForm();
 
+    const [selectedProvince, setSelectedProvince] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+    const [selectedWard, setSelectedWard] = useState(null);
+    
+
+    const changeProvince=(a)=>{
+        setSelectedProvince(a)
+    }
+    const changeDistrict=(a)=>{
+        setSelectedDistrict(a)
+    }
+    const changeWard=(a)=>{
+        setSelectedWard(a)
+    }
     const email = useSelector(selectEmail)
-    console.log(email)
+
     const onSubmit = (shop) => {
-        console.log(shop)
+        console.log(selectedDistrict.value)
+        shop.address=`${shop.address}, ${selectedWard.value}, ${selectedDistrict.value}, ${selectedProvince.value}`
         axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/shop/register-shop`, shop,{
             headers: {
             'Content-Type': 'application/json'
@@ -83,10 +98,19 @@ function RegisterShop() {
                                     : ''}
                             </p>
                         </div>
+
                         {/* <label>Address</label> */}
                         <div className={cx('input-error')}>
+                            <Province 
+                                selectedProvince={selectedProvince}
+                                selectedDistrict={selectedDistrict}
+                                selectedWard={selectedWard}
+                                changeDistrict={changeDistrict}
+                                changeProvince={changeProvince}
+                                changeWard={changeWard}
+                            />
                             <input
-                                placeholder="Nhập địa chỉ giao hàng"
+                                placeholder="Nhập số nhà, đường...."
                                 {...register('address', { required: true, minLength: 5 })}
                             />
                             <p>

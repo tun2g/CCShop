@@ -9,10 +9,19 @@ const userSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
+    setId: (state, action) => {
+      state._id = action.payload;
+    },
   },
 });
 
-export const { setEmail } = userSlice.actions;
+export const { setEmail,setId } = userSlice.actions;
+
+export const selectId = createSelector(
+    (state) => state.user._id,
+    (_id) =>_id 
+  );
+
 export const selectEmail = createSelector(
     (state) => state.user.email,
     (email) => email
