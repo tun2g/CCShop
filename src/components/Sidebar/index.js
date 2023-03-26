@@ -1,23 +1,27 @@
 import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-
-
+import { NavLink, useLocation} from 'react-router-dom';
 import { useEffect, useState } from 'react';
+
+import { useSelector } from 'react-redux';
+import { selectId } from '../../ReduxService/UserSlice';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
+
+    const id= useSelector(selectId)
+
     const optionList = [
         {
             id: 1,
             name: 'Đăng bán sản phẩm',
-            path: '/',
+            path: '/shop',
         },
         {
             id: 2,
             name: 'Xem danh sách',
-            path: '/',
+            path: `/shop/list-product?key=${id}`,
             admin: true,
         },
         {
@@ -32,9 +36,7 @@ function Sidebar() {
         },
     ];
 
-
     const location = useLocation();
-
     useEffect(() => {
         console.log('render sidebar');
     }, []);
@@ -47,9 +49,7 @@ function Sidebar() {
                         <NavLink
                             key={item.id}
                             className={
-                                location.pathname === item.path
-                                    ? cx('sidebar-option-item', 'active')
-                                    : cx('sidebar-option-item')
+                                cx('sidebar-option-item')
                             }
                             to={item.path}
                         >

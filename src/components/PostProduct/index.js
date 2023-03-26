@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { selectEmail } from '../../ReduxService/UserSlice';
+import { selectId } from '../../ReduxService/UserSlice';
 
 const cx = classNames.bind(styles);
 function PostProduct() {
@@ -14,7 +14,7 @@ function PostProduct() {
         formState: { errors },
     } = useForm();
 
-    const email = useSelector(selectEmail)
+    const shopid = useSelector(selectId)
     const [imagePath,setImagePath]=useState()
    
 
@@ -34,7 +34,7 @@ function PostProduct() {
     
     const onSubmit = (product) => {
         product.file=imagePath
-        product.email=email
+        product.shopid=shopid
         axios.post(`${process.env.REACT_APP_SERVER_API_URI}/product/upload`, product,{
             headers: {
             'Content-Type': 'application/json',
@@ -73,17 +73,6 @@ function PostProduct() {
                                 : ''}</p>
                         </div>
                         
-                        {/* <label>Họ tên</label> */}
-                        <div className={cx('input-error')}>
-                            <input placeholder="Mã sản phẩm" {...register('prodkey', { required: true,minLength:3 })} />
-                            <p>{errors?.name?.type 
-                                === 'required' 
-                                ? 'Không được bỏ trống' 
-                                : errors.prodkey?.type === 'minLength'
-                                ? 'Tên phải có từ 3 kí tự'
-                                : ''}</p>
-                        </div>
-                        {/* <label>Phone Number</label> */}
                         <div className={cx('input-error')}>
                             <input
                                 placeholder="Mô tả sản phẩm"
@@ -96,7 +85,10 @@ function PostProduct() {
                             <p>
                                 {errors?.description?.type === 'required'
                                     ? 'Không được bỏ trống'
-                                    : ''}
+                                    : errors.description?.type==='minLenght'
+                                    ? 'Ít nhất 8 kí tự'
+                                    : ''
+                                }
                             </p>
                         </div>
                         {/* <label>Address</label> */}
@@ -111,6 +103,7 @@ function PostProduct() {
                                     : ''}
                             </p>
                         </div>
+                        
                         {/* <label>Address</label> */}
                         <div className={cx('input-error')}>
                             <input

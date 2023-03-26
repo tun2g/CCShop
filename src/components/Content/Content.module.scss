@@ -1,5 +1,6 @@
 .Content {
     padding: 16px 8px;
+    width: 100%;
 }
 .card-title {
     color: #db0075;
@@ -15,4 +16,10 @@
 }
 .btn-pink {
     background-color: #fcb2b2 !important;
+}
+
+.menu{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }

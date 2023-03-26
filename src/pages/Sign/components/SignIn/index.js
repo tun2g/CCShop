@@ -2,16 +2,17 @@ import styles from './SignIn.module.scss';
 import classNames from 'classnames/bind';
 import { useForm } from 'react-hook-form';
 import { useEffect,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
-import { setEmail } from '../../../../ReduxService/UserSlice';
+import { setEmail,setId} from '../../../../ReduxService/UserSlice';
 import { setInRedis } from '../../../../utils/service';
 import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles);
 function SignIn(props) {
     const dispatch=useDispatch()
-
+    const navigate=useNavigate()
     const [isForgot,setForgot]=useState(false)
     const {
         register,
@@ -32,14 +33,17 @@ function SignIn(props) {
             console.log(response.data)
             if(response.data.status===401 || response.data.status===500){
                 setEmail(user.email)
+                
                 setForgot(true)
                 setError("password", {
                 type: "errorPassword",
                 message: "Sai mật khẩu hoặc tài khoản",
                 });
             }
+            response.data.token&&dispatch(setId(response.data.user._id))
             response.data.token&&dispatch(setEmail(user.email))
             response.data.token&&setInRedis({value:response.data.token})  
+            response.data.token&&navigate('/')
         })
         .catch(error => {
             console.error(error);

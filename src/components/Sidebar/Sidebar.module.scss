@@ -1,7 +1,7 @@
 .sidebar {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    // justify-content: space-between;
     width: var(--sidebar-width);
     border: 1px solid #333;
     position: fixed;
@@ -22,8 +22,9 @@
     text-decoration: none;
 
     display: flex;
-    align-items: center;
-    justify-content: center;
+    // align-items: center;
+    // justify-content: center;
+    padding: 20px;
     border-top: 1px solid rgb(255 255 255 / 30%);
 
     &:hover {
@@ -58,8 +59,8 @@
     height: 60px;
     text-decoration: none;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    // align-items: center;
+    // justify-content: center;
     border-top: 1px solid rgb(255 255 255 / 30%);
     color: white;
     font-weight: bold;

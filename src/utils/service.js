@@ -1,4 +1,6 @@
 import axios from "./axios.config";
+import { useState,useEffect } from "react";
+
 
 // use Cookie for store Token 
 const getCookie = (name) => {
@@ -53,8 +55,8 @@ const getResponseInvalidToken=(callback)=>{
   }); 
 }
 
+// handle log out
 const logOut=(e)=>{
-  e.preventDefault()
   axios.get(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/logout`,{
     withCredentials: true,    
   })
@@ -65,4 +67,22 @@ const logOut=(e)=>{
     console.log(error);
   }); 
 }
-export {getCookie,getResponseInvalidToken,getInRedis,setInRedis,logOut}
+
+// debounce
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+export {getCookie,getResponseInvalidToken,getInRedis,setInRedis,logOut,useDebounce}

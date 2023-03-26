@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { getCookie, getResponseInvalidToken,setInRedis } from './service';
-import { useDispatch } from 'react-redux';
-import { setEmail } from '../ReduxService/UserSlice';
+
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API_URI,

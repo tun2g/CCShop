@@ -12,8 +12,8 @@ function Header() {
             path: '/',
         },
         {
-            name: '???',
-            path: '/sales',
+            name: 'Giỏ hàng',
+            path: '/cart',
         },
         
         {
@@ -44,11 +44,7 @@ function Header() {
                         item.name==='Đăng Xuất'?
                         <NavLink
                             key={item.name}
-                            className={
-                                location.pathname === item.path
-                                    ? cx('header-option-item', 'active')
-                                    : cx('header-option-item')
-                            }
+                            className={ cx('header-option-item')}
                             onClick={logOut}
                             to={item.path}
                         >
@@ -57,11 +53,7 @@ function Header() {
                         :
                         <NavLink
                             key={item.name}
-                            className={
-                                location.pathname === item.path
-                                    ? cx('header-option-item', 'active')
-                                    : cx('header-option-item')
-                            }
+                            className={ cx('header-option-item')}
                             to={item.path}
                         >
                             <span>{item.name}</span>

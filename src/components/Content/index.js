@@ -5,7 +5,7 @@ import axios from '../../utils/axios.config';
 // import axios from 'axios';
 import { useEffect,memo, useState } from 'react';
 import { getInRedis } from '../../utils/service';
-import ProductCard from '../ProductCard';
+import ProductCard from '../Products/ProductCard';
 
 const cx = classNames.bind(styles);
 const Content = () => {
@@ -19,7 +19,6 @@ const Content = () => {
 
     
     useEffect(()=>{
-        console.log(listProducts)
         token&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-all`, {
             headers: {
                 token: `Bearer ${token}`,
@@ -40,7 +39,7 @@ const Content = () => {
                 <Container className={cx('menu')}>
                         {
                         listProducts?.map((element)=>{
-                            return <ProductCard key={element.key} product={element}/>
+                            return <ProductCard key={element._id.toString()} product={element}/>
                         })}
                 </Container>
             </div>

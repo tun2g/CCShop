@@ -11,12 +11,14 @@ import {
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
-
+import { useSelector } from 'react-redux';
+import { selectId } from '../../../ReduxService/UserSlice';
 
 function ProductDetail() {
     const location=useLocation()
     const searchParams = new URLSearchParams(location.search);
     const keyProduct = searchParams.get('key');
+    const userid=useSelector(selectId)
 
     const [product,setProduct]=useState()
     const [quantity, setQuantity] = useState(1);
@@ -29,7 +31,6 @@ function ProductDetail() {
         setQuantity(quantity > 1 ? quantity - 1 : 1);
     }
     
-
     useEffect(()=>{
         axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-product/${keyProduct}`,{
           headers:{
@@ -43,6 +44,28 @@ function ProductDetail() {
             console.log(err)
         })
     },[])
+
+    const handleAddToCart=()=>{
+        axios.post(`${process.env.REACT_APP_SERVER_API_URI}/cart/add`,{
+            userid,
+            shopid:product.shopid,
+            quantity,
+            cost:quantity*product.price,
+            size:product?.size,
+            color:product?.color,
+            productid:product._id, 
+        },{
+          headers:{
+            "Content-Type":"application/json",
+          }
+        })
+        .then(res=>{
+          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    }
   return (
     <MDBContainer fluid>
       <MDBRow className="justify-content-center mb-3">
@@ -124,7 +147,7 @@ function ProductDetail() {
                     </div>
                     </div> 
                     :''}
-                    <button className='btn btn-primary mt-4' >
+                    <button className='btn btn-primary mt-4' onClick={handleAddToCart}>
                       Thêm vào giỏ hàng
                     </button>
                 </div>
