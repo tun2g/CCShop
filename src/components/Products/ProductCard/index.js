@@ -16,6 +16,7 @@ function ProductCard(props) {
   const handleClickDetail=()=>{
       const id=props.product._id.toString()
       navigate(`/product?key=${id}`)
+      window.scrollTo(0, 0);
   }
   return (
       <MDBRow className="justify-content-center mb-3">

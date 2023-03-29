@@ -5,7 +5,7 @@ import { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
-import { setEmail,setId} from '../../../../ReduxService/UserSlice';
+import { setAvatar, setEmail,setId} from '../../../../ReduxService/UserSlice';
 import { setInRedis } from '../../../../utils/service';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,10 +30,8 @@ function SignIn(props) {
             timeout: 5000
         })
         .then(response => {
-            console.log(response.data)
             if(response.data.status===401 || response.data.status===500){
-                setEmail(user.email)
-                
+                dispatch(setEmail(user.email))
                 setForgot(true)
                 setError("password", {
                 type: "errorPassword",
@@ -43,7 +41,8 @@ function SignIn(props) {
             response.data.token&&dispatch(setId(response.data.user._id))
             response.data.token&&dispatch(setEmail(user.email))
             response.data.token&&setInRedis({value:response.data.token})  
-            response.data.token&&navigate('/')
+            response.data.token&&dispatch(setAvatar(user.avatar))
+            response.data.token&&navigate('/')&&window.scrollTo(0, 0);
         })
         .catch(error => {
             console.error(error);

@@ -8,7 +8,8 @@ function Province(props) {
     const [provinces,setProvince]=useState()
     const [districts,setDistrict]=useState()
     const [wards,setWard]=useState()
-
+    const [showDistricts,setShowD]=useState("none")
+    const [showWards,setShowW]=useState("none")
   
 
   useEffect(()=>{
@@ -45,6 +46,7 @@ function Province(props) {
     })
     props.changeDistrict(null);
     props.changetedWard(null);
+    setShowD("flex")
   };
 
   const handleDistrictChange = (selectedOption) => {
@@ -63,6 +65,7 @@ function Province(props) {
       console.log(err)
     })
     props.changeWard(null);
+    setShowW("flex")
   };
 
   const handleWardChange = (selectedOption) => {
@@ -83,6 +86,7 @@ function Province(props) {
         options={districts}
         placeholder="Chọn quận huyện"
         isDisabled={!props.selectedProvince}
+        style={{display:showDistricts}}
       />
       <Select
         value={props.selectedWard}
@@ -90,6 +94,7 @@ function Province(props) {
         options={wards}
         placeholder="Chọn xã phường"
         isDisabled={!props.selectedDistrict}
+        style={{display:showWards}}
       />
     </div>
   );

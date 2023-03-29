@@ -11,7 +11,6 @@ const cx=classNames.bind(styles)
 const Cart=()=>{
     const id=useSelector(selectId)
     const [listProducts,setList]=useState()
-    const [listCarts,setListCarts]=useState()
     
     //handle delete cart in component ProductCardInCart
     const [isDeleted,setDelete]=useState()
@@ -28,8 +27,7 @@ const Cart=()=>{
             }
         })
         .then(res=>{
-            setList(res.data.product)
-            setListCarts(res.data.cart)
+            setList(res.data)
         })
         .catch(err=>{
             console.log(err)
@@ -45,8 +43,8 @@ const Cart=()=>{
                     return ( 
                     <ProductCardInCart 
                         key={element._id} 
-                        product={element} 
-                        cart={listCarts[index]}
+                        product={element.productid} 
+                        cart={element}
                         isDeleted={isDeleted}
                         changeDelete={changeDelete}
                         />

@@ -31,7 +31,6 @@ function RegisterShop() {
     const email = useSelector(selectEmail)
 
     const onSubmit = (shop) => {
-        console.log(selectedDistrict.value)
         shop.address=`${shop.address}, ${selectedWard.value}, ${selectedDistrict.value}, ${selectedProvince.value}`
         axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/shop/register-shop`, shop,{
             headers: {

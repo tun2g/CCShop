@@ -14,6 +14,7 @@ function ProductByShop(props) {
   const navigate=useNavigate()
   const handleClickDetail=()=>{
       navigate(`/product?key=${props.product.key}`)
+      window.scrollTo(0, 0);
   }
   return (
     <MDBContainer fluid>
@@ -77,7 +78,7 @@ function ProductByShop(props) {
                   <h6 className="text-success">Free shipping</h6>
                   <div className="d-flex flex-column mt-4">
                     <button className='btn btn-primary' onClick={handleClickDetail}>
-                      Details
+                      Cập nhật
                     </button>
                   </div>
                 </MDBCol>

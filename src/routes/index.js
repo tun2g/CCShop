@@ -7,6 +7,8 @@ import Home from '../pages/Home';
 import Shop from '../pages/Shop';
 import Sign from '../pages/Sign';
 import Cart from '../components/Cart';
+import Profile from '../components/Profile';
+import ProfileOther from '../components/ProfileOther';
 
 
 const publicRoutes = [
@@ -17,6 +19,8 @@ const publicRoutes = [
     {path: '/shop' ,component:Shop,layout:ShopLayout},
     {path: '/product',component:ProductDetail,layout:UserLayout},
     {path: '/shop/list-product',component:ShopProductList,layout:ShopLayout},
+    {path: '/profile', component:Profile,layout:UserLayout},
+    {path: '/profile-other',component:ProfileOther, layout:UserLayout},
 ];
 
 

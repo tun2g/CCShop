@@ -57,6 +57,7 @@ const getResponseInvalidToken=(callback)=>{
 
 // handle log out
 const logOut=(e)=>{
+
   axios.get(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/logout`,{
     withCredentials: true,    
   })
