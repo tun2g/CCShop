@@ -4,7 +4,7 @@ import { NavLink, useLocation} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import { selectId } from '../../ReduxService/UserSlice';
+import { selectId } from '../../../ReduxService/UserSlice';
 
 const cx = classNames.bind(styles);
 

@@ -1,12 +1,12 @@
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { NavLink, useLocation} from 'react-router-dom';
-import { logOut } from '../../utils/service';
+import { logOut } from '../../../utils/service';
 import { useSelector } from 'react-redux';
-import { selectId } from '../../ReduxService/UserSlice';
+import { selectId } from '../../../ReduxService/UserSlice';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setId,setEmail } from '../../ReduxService/UserSlice';
+import { setId,setEmail } from '../../../ReduxService/UserSlice';
 const cx = classNames.bind(styles);
 
 function Header() {

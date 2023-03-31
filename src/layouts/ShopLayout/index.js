@@ -1,6 +1,6 @@
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
-import Footer from '../../components/Footer';
+import Header from '../../components/Layouts/Header';
+import Sidebar from '../../components/Layouts/Sidebar';
+import Footer from '../../components/Layouts/Footer';
 import classNames from 'classnames/bind';
 import styles from './ShopLayout.module.scss';
 

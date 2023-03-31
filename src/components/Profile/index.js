@@ -18,7 +18,7 @@ import Province from "../Province"
 
 const Profile=()=>{
     const id=useSelector(selectId)
-    const [user,setUser]=useState()
+    const [user,setUser]=useState(false)
     const [hover,setHover]=useState('none')
     const [introInput,setIntroInput]=useState('')
     const [addressInput,setAddressInput]=useState('')
@@ -41,6 +41,7 @@ const Profile=()=>{
     }
     /**/
     
+    const [loadProduct,setLoadProduct]=useState(false)
 
     //set re-render address
     const [newAddress,setNewAddress]=useState(false)
@@ -69,10 +70,21 @@ const Profile=()=>{
     const handleChange=(a)=>{
       setChange(a)
     }
-
+    const getProductList=()=>{
+      user?.isShop&& axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-all/${user._id}`)
+      .then(res=>{
+          setList(res.data)
+          setLoadProduct(false)
+      })
+      .then(err=>{
+          console.log(err)
+      })
+    }
 
     useEffect(()=>{ 
       console.log('profile render')
+      loadProduct&&getProductList()
+
       // tải ảnh đại diện
       reload&&updateUser({value:imagePath,field:"avatar"})
 
@@ -82,20 +94,17 @@ const Profile=()=>{
       axios.get(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/auth/${id}`)
       .then(res=>{
           setUser(res.data)
+          setLoadProduct(true)
       })
       .catch(err=>{
           console.log(err)
       })
-
       
-    },[imageInput,change,reload,newIntro,newAddress])
-    user?.isShop&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-all/${user._id}`)
-      .then(res=>{
-          setList(res.data)
-      })
-      .then(err=>{
-          console.log(err)
-      })
+      
+    },[imageInput,change,reload,newIntro,newAddress,loadProduct])
+    
+  
+    
     
     const updateAvata=(e)=>{
       setImageInput(e.target.files[0])
@@ -261,6 +270,7 @@ const Profile=()=>{
                       </MDBCol>
                     </MDBRow>
                   </div>
+
                 {user?.isShop&& list?.map((pro,index)=>{
                     if(index %2===0)
                     return(

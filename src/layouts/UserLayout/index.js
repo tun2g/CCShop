@@ -1,5 +1,5 @@
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../components/Layouts/Header';
+import Footer from '../../components/Layouts/Footer';
 import classNames from 'classnames/bind';
 import styles from './UserLayout.module.scss';
 

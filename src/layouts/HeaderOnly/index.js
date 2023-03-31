@@ -1,4 +1,4 @@
-import Header from '../../components/Header';
+import Header from '../../components/Layouts/Header';
 import classNames from 'classnames/bind';
 import styles from './HeaderOnly.module.scss';
 
