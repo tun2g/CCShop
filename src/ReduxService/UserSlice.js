@@ -16,7 +16,7 @@ const userSlice = createSlice({
       state._id = action.payload;
     },
     setAvatar: (state,action)=>{
-      state.avatar=action.payload
+      state.avatar = action.payload
     }
   },
 });

@@ -274,7 +274,7 @@ const Profile=()=>{
                 {user?.isShop&& list?.map((pro,index)=>{
                     if(index %2===0)
                     return(
-                      <MDBRow>
+                      <MDBRow key={index}>
                       <MDBCol className="mb-2">
                         <MDBCardImage src={pro.imageurl}
                           alt="image 1" className="w-100 rounded-3" />
@@ -285,6 +285,7 @@ const Profile=()=>{
                       </MDBCol>}
                     </MDBRow> 
                     )
+                    else return <div key={index}></div>
 
                 })
                 }

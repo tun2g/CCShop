@@ -45,7 +45,7 @@ const ProfileOther=()=>{
     },[loadProduct])
 
     const getProductList=()=>{
-    user?.isShop&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-all/${user._id}`)
+      user?.isShop&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-all/${user._id}`)
       .then(res=>{
           setList(res.data)
           setLoadProduct(false)
@@ -107,7 +107,7 @@ const ProfileOther=()=>{
                 {user?.isShop&& list?.map((pro,index)=>{
                     if(index %2===0)
                     return(
-                      <MDBRow>
+                      <MDBRow key={index}>
                       <MDBCol className="mb-2">
                         <MDBCardImage src={pro.imageurl}
                           alt="image 1" className="w-100 rounded-3" />
@@ -118,7 +118,7 @@ const ProfileOther=()=>{
                       </MDBCol>}
                     </MDBRow> 
                     )
-
+                    else return <div key={index}></div>
                 })
                 }
                 </div>

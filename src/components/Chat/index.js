@@ -11,28 +11,45 @@ import {
   MDBCardFooter,
   MDBIcon,
 } from "mdb-react-ui-kit";
-
+import { useSelector } from "react-redux";
+import {selectId,selectAvatar} from "../../ReduxService/UserSlice"
+import axios from "axios";
 function Chat(props) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const socket = useContext(SocketContext);
+  const id=useSelector(selectId)
+  const avatar=useSelector(selectAvatar)
 
   useEffect(() => {
-    socket.emit("joinRoom", "aaa");
+    
+    const chatRoom=props.user._id<id?
+                  `${props.user._id}${id}`
+                  :`${id}${props.user._id}`
 
-    socket.on("message", (message) => {
-      console.log("con");
-      setMessages((messages) => [...messages, message]);
+    socket.emit("joinRoom", chatRoom);
+
+    axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/redis/redis-get`,{key:chatRoom})
+    .then(data=>{
+        setMessages(JSON.parse(data.data.value))
+      })
+    .catch(err=>{
+      console.log(err)
+    })
+    
+
+    socket.on("message", (data) => {
+      setMessages(data.listMessages);
     });
 
     return () => {
       socket.off("message");
-      socket.emit("leaveRoom", "aaa");
+      socket.emit("leaveRoom", chatRoom);
     };
   }, [socket]);
 
   const handleMessageSubmit = () => {
-    socket.emit("message", input);
+    socket.emit("message", {message:input,sender:id,receiver:props.user._id});
     setInput("");
   };
 
@@ -43,43 +60,28 @@ function Chat(props) {
           <MDBCol md="12" lg="12" xl="12">
             <MDBCard id="chat2" style={{ borderRadius: "5px" }}>
               <MDBCardHeader className="d-flex justify-content-between align-items-center">
+                <div style={{display:"flex",flexDirection:"row"}}>
+                <img src={props.user.avatar} style={{width:"30px",borderRadius:"50%",marginRight:"5px"}}></img>
                 <h5 className="mb-0">{props.user.username}</h5>
-                <btn className="btn btn-primary" size="sm" rippleColor="dark" onClick={()=>props.changeChat(false)}>
+                </div>
+                <button className="btn btn-primary" size="sm" rippleColor="dark" onClick={()=>props.changeChat(false)}>
                   X
-                </btn>
+                </button>
               </MDBCardHeader>
               <MDBCardBody>
                 <ScrollbarComponent>
-                  <div className="d-flex flex-row justify-content-end mb-4">
-                    <div>
-                      <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                        That's awesome!
-                      </p>
-                      <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                        I will meet you Sandon Square sharp at 10 AM
-                      </p>
-                      <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                        Is that okay?
-                      </p>
-                      <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">
-                        00:09
-                      </p>
-                    </div>
-                    <img
-                      src={props.user.avatar}
-                      alt="avatar 1"
-                      style={{ width: "45px", height: "100%" ,borderRadius:"50%",}}
-                    />
-                  </div>
 
-                  {messages.map((message, index) => {
+                  
+
+                  {messages?.map((message, index) => {
+                    if(message.sender!==id)
                     return (
                       <div
                         className="d-flex flex-row justify-content-start mb-4"
                         key={index}
                       >
                         <img
-                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                          src={props.user.avatar}
                           alt="avatar 1"
                           style={{ width: "45px", height: "100%" }}
                         />
@@ -88,14 +90,31 @@ function Chat(props) {
                             className="small p-2 ms-3 mb-1 rounded-3"
                             style={{ backgroundColor: "#f5f6f7" }}
                           >
-                            {message}
+                            {message.message}
                           </p>
                           <p className="small ms-3 mb-3 rounded-3 text-muted">
                             00:11
                           </p>
                         </div>
                       </div>
-                    );
+                    )
+                    else return(
+                  <div className="d-flex flex-row justify-content-end mb-4">
+                    <div>
+                      <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
+                        {message.message}
+                      </p>
+                      <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">
+                        00:09
+                      </p>
+                    </div>
+                    <img
+                      src={avatar}
+                      alt="avatar 1"
+                      style={{ width: "45px", height: "100%" ,borderRadius:"50%",}}
+                    />
+                  </div>
+                    )
                   })}
                 </ScrollbarComponent>
               </MDBCardBody>

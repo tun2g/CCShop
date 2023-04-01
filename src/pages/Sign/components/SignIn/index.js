@@ -41,7 +41,7 @@ function SignIn(props) {
             response.data.token&&dispatch(setId(response.data.user._id))
             response.data.token&&dispatch(setEmail(user.email))
             response.data.token&&setInRedis({value:response.data.token})  
-            response.data.token&&dispatch(setAvatar(user.avatar))
+            response.data.token&&dispatch(setAvatar(response.data.user.avatar))
             response.data.token&&navigate('/')&&window.scrollTo(0, 0);
         })
         .catch(error => {
