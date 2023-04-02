@@ -5,7 +5,7 @@ import { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
-import { setAvatar, setEmail,setId} from '../../../../ReduxService/UserSlice';
+import { setAvatar, setEmail,setId,setName} from '../../../../ReduxService/UserSlice';
 import { setInRedis } from '../../../../utils/service';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -43,6 +43,7 @@ function SignIn(props) {
             response.data.token&&setInRedis({value:response.data.token})  
             response.data.token&&dispatch(setAvatar(response.data.user.avatar))
             response.data.token&&navigate('/')&&window.scrollTo(0, 0);
+            response.data.token&&dispatch(setName(response.data.user.username))
         })
         .catch(error => {
             console.error(error);

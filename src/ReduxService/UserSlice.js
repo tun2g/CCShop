@@ -7,6 +7,7 @@ const userSlice = createSlice({
   initialState: { email: false,
     _id:false,
     avatar:false,
+    name:false
     },
   reducers: {
     setEmail: (state, action) => {
@@ -17,11 +18,14 @@ const userSlice = createSlice({
     },
     setAvatar: (state,action)=>{
       state.avatar = action.payload
+    },
+    setName:(state,action)=>{
+      state.username = action.payload
     }
-  },
+  }
 });
 
-export const { setEmail,setId,setAvatar } = userSlice.actions;
+export const { setEmail,setId,setAvatar,setName } = userSlice.actions;
 
 export const selectId = createSelector(
     (state) => state.user._id,
@@ -36,6 +40,9 @@ export const selectAvatar = createSelector(
     (state) => state.user.avatar,
     (avatar) => avatar
   );
-
+  export const selectName = createSelector(
+    (state) => state.user.username,
+    (avatar) => avatar
+  );
 
 export default userSlice.reducer;

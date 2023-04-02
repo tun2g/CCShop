@@ -12,7 +12,7 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
-import {selectId,selectAvatar} from "../../ReduxService/UserSlice"
+import {selectId,selectAvatar,selectName} from "../../ReduxService/UserSlice"
 import axios from "axios";
 function Chat(props) {
   const [messages, setMessages] = useState([]);
@@ -20,7 +20,8 @@ function Chat(props) {
   const socket = useContext(SocketContext);
   const id=useSelector(selectId)
   const avatar=useSelector(selectAvatar)
-
+  const name=useSelector(selectName)
+  console.log("name",name)
   useEffect(() => {
     
     const chatRoom=props.user._id<id?
@@ -50,6 +51,7 @@ function Chat(props) {
 
   const handleMessageSubmit = () => {
     socket.emit("message", {message:input,sender:id,receiver:props.user._id});
+    socket.emit("notifyMessage",{receiver:props.user._id,sender:id,name:name,avatar})
     setInput("");
   };
 

@@ -26,13 +26,55 @@
     text-decoration: none;
     transition: all 0.5s ease;
 
-    &:hover {
-        transform: scale(1.1);
-    }
+   
 
     span {
         font-size: 16px;
         margin-left: 8px;
         text-transform: uppercase;
+        &:hover {
+            transform: scale(1.1);
+            cursor: pointer;       
+            color: blue;
+        }
     }
+}
+
+.noti-wrap{
+
+    position: relative;
+}
+.number-of-notifications{
+    padding: 1px 7px;
+    border-radius: 50%;
+    border: 0.1px white solid;
+    background-color: red;
+    color: white;
+    position: absolute;
+    top:-10px;
+    left:0;
+}
+.notification{
+    border: 0.5px solid #321333;
+    position: absolute;
+    width: 400px;
+    border-radius: 3px;
+    height: 500px;
+    top: 20px;
+    left: -300px;
+    background-color: #fff;
+}
+.wrap-item{
+    display: block;
+    border: 0.1px solid #443543;
+    flex-direction: row;
+    padding: 3px;
+    padding-left: 10px;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+.noti-item{
+    color: black;
+    padding: 3px;
+    margin: 1px;
 }
