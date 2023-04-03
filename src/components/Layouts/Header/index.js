@@ -17,8 +17,14 @@ const cx = classNames.bind(styles);
 function Header() {
     const dispatch=useDispatch()
     const id=useSelector(selectId)
-    const ref=useRef()
     const socket = useContext(SocketContext);
+
+
+    //click outside
+    const ref=useRef()
+
+    //click notify icon (click outside)
+    const notifyRef=useRef()
 
     // hiển thị bảng thông báo
     const [notify,setNotify]=useState(false)
@@ -36,8 +42,11 @@ function Header() {
 
     useEffect(()=>{
         function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                  setNotify(false)
+            if (ref.current && !ref.current.contains(event.target)){
+                if(notifyRef.current.contains(event.target)){
+                }  
+                else
+                 setNotify(false)
               }
         }
           
@@ -49,27 +58,42 @@ function Header() {
 
         id==='false'?setOptionList(lListDefault):setOptionList(lListLogin)
 
+
+        //set number of notifications
+        axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/redis/redis-get`,
+                {key:`numberNotify${id}`}
+        )
+        .then(data=>{
+            const arr= JSON.parse(data.data.value)
+            setNumberNotis(arr?.length)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
         //set notifications
         axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/redis/redis-get`,{key:id})
         .then(data=>{
             setListNoti(JSON.parse(data.data.value))
-            console.log("oke")
         })
         .catch(err=>{
         console.log(err)
         })
+
+
         socket.emit("joinRoom", id);
 
         socket.on("notifyMessage",(data)=>{
             setListNoti(data.listNotifications)
-            setNumberNotis(numberNotis+1)
+            console.log("num",numberNotis)
+            setNumberNotis(parseInt(numberNotis)+1)
         })
         return ()=>{
             socket.off("notifyMessage");
             socket.emit("leaveRoom", id);
               document.removeEventListener("mousedown", handleClickOutside);
         }
-    },[socket,ref])
+    },[socket,ref,notifyRef])
 
     const location=useLocation()
 
@@ -108,12 +132,15 @@ function Header() {
                 {
                     optionrightList.map((item,index) => (
                         item.name==="Thông báo"?
-                        <div key={index} className={cx('header-option-item')}>
-                            <span onClick={()=>{
-                                setNotify(true)
-                                setNumberNotis(0)
+                        <div key={index} className={cx('header-option-item')} >
+                            <span ref={notifyRef} onClick={()=>{
+                                setNotify(!notify)
+                                setNumberNotis(false)
+                                axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/redis/redis-del`,
+                                        {key:`numberNotify${id}`}
+                                )
                                 }}>{item.name}</span>
-                            {numberNotis!==0&& 
+                            {numberNotis&&numberNotis!==0&& 
                                 <div className={cx('noti-wrap')}>
                                 <div className={cx('number-of-notifications')}>
                                     {numberNotis}
@@ -126,7 +153,12 @@ function Header() {
                                     {listNotifications?.map((noti,index)=>{
                                         return (
                                         <div className={cx('wrap-item')} onClick={()=>{
-                                            navigate(`/profile-other?key=${noti.sender}`)
+                                            if(noti.type==="message") {
+                                                navigate(`/profile-other?key=${noti.sender}`)
+                                            }
+                                            else {
+                                                navigate(`/product?key=${noti.product}`)
+                                            }
                                             window.scrollTo(0,0)
                                             setNotify(false)
                                         }}>

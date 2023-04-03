@@ -18,8 +18,6 @@ function Sign() {
 
     
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('wrapper-main')}>
                 <div className={cx('sign')}>
                     {isSignIn===1 ? (
                         <SignIn handleChangeSign={handleChangeSign} />
@@ -32,8 +30,6 @@ function Sign() {
                     <ForgotPassword handleChangeSign={handleChangeSign} />
                 }
                 </div>
-            </div>
-        </div>
     );
 }
 

@@ -14,25 +14,47 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { selectId } from "../../../ReduxService/UserSlice";
+import { selectId,selectAvatar,selectName } from "../../../ReduxService/UserSlice";
 import RatingStar from "../RatingStar";
 import { useDebounce } from "../../../utils/service";
 import { useNavigate } from "react-router-dom";
-
+import { SocketContext } from "../../../SocketService";
+import { useContext } from "react";
 function ProductDetail() {
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const keyProduct = searchParams.get("key");
+
+  //redux-toolkit 
   const userid = useSelector(selectId);
+  const avatar = useSelector(selectAvatar)
+  const name=useSelector(selectName)
+
   const navigate=useNavigate()
+  
+  const keyProduct = searchParams.get("key");
+
   const [product, setProduct] = useState();
+
+  // quantity of product order
   const [quantity, setQuantity] = useState(1);
+  
+  // set rating input
   const [rating, setRating] = useState(0);
+  
+  // content review input
   const [comment, setComment] = useState("");
+  
+  //render existed commets
   const [listComments, setlist] = useState([]);
+  
+  // handle new comment => useSelect
   const [newComments, setNewComment] = useState(false);
 
+
   const bounce = useDebounce(rating, 1000);
+
+  const socket=useContext(SocketContext)
 
   const changeRating = (a) => {
     setRating(a);
@@ -47,6 +69,7 @@ function ProductDetail() {
 
   useEffect(() => {
     console.log("detail render");
+
     axios
       .get(
         `${process.env.REACT_APP_SERVER_API_URI}/product/get-product/${keyProduct}`,
@@ -75,6 +98,9 @@ function ProductDetail() {
       .catch((err) => {
         console.log(err);
       });
+      return ()=>{
+
+      }
   }, [bounce, newComments]);
 
   const handleAddToCart = () => {
@@ -105,7 +131,8 @@ function ProductDetail() {
   };
 
   const handleReview = () => {
-    rating !== 0 &&
+    if(rating !== 0){
+
       axios
         .post(
           `${process.env.REACT_APP_SERVER_API_URI}/review/${product._id}`,
@@ -130,9 +157,19 @@ function ProductDetail() {
         .catch((err) => {
           console.log(err);
         });
+        socket.emit("notifyMessage",{
+          sender:userid,
+          name,
+          receiver:product.shopid,
+          type:"comment",
+          avatar,
+          product:product._id
+        })
+    } 
+
   };
   return (
-    <div>
+    <div style={{position:"relative"}}>
       <MDBContainer fluid>
         <MDBRow className="justify-content-center mb-3 mt-10">
           <MDBCol md="12" xl="10">
@@ -232,7 +269,7 @@ function ProductDetail() {
       </MDBContainer>
 
       {/* Chi tiết sản phẩm */}
-      <div className="container mt-5">
+      <div className="container mt-5 " style={{backgroundColor:"white"}}>
         <div className="row">
           <div className="col-10">
             <div className="row  border shadow-0 rounded-3">
@@ -279,24 +316,26 @@ function ProductDetail() {
 
       {/* Đánh giá sản phẩm */}
 
-      <MDBContainer className="mt-3 border rounded-3">
-        <h3 className="mt-3">Đánh giá sản phẩm</h3>
-        <div className="col-2 mt-3">
-          <RatingStar rating={rating} changeRating={changeRating} />
-        </div>
+       <MDBContainer className="mt-3 border rounded-3" style={{backgroundColor:"white"}}>
+        {
+        product?.shopid !== userid &&<>
+          <h3 className="mt-3">Đánh giá sản phẩm</h3>
+          <div className="col-2 mt-3">
+            <RatingStar rating={rating} changeRating={changeRating} />
+          </div>
 
-        <div className="mt-3">
-          <MDBInput
-            hint="Tìm kiếm sản phẩm"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          ></MDBInput>
-        </div>
-        <div className="mt-3 ">
-          <button className="btn btn-primary" onClick={handleReview}>
-            Đánh giá
-          </button>
-        </div>
+          <div className="mt-3">
+            <MDBInput
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              ></MDBInput>
+          </div>
+          <div className="mt-3 ">
+            <button className="btn btn-primary" onClick={handleReview}>
+              Đánh giá
+            </button>
+          </div>
+        </>}
 
         <div className="mt-3 col-10">
           <h5>Dánh sách đánh giá</h5>
@@ -312,7 +351,7 @@ function ProductDetail() {
                             <MDBCardImage
                               src={comment.userid.avatar}
                               className="w-100 border"
-                              style={{ borderRadius: "50%" }}
+                              style={{ borderRadius: "50%",cursor:"pointer"}}
                               onClick={
                                   ()=>{
                                     userid===comment.userid._id?
@@ -330,7 +369,7 @@ function ProductDetail() {
                               <MDBCol>
                                 {[...Array(comment?.rating)]?.map(
                                   (_i, index) => {
-                                    return <MDBIcon fas icon="star"></MDBIcon>;
+                                    return <MDBIcon fas icon="star" key={index}></MDBIcon>;
                                   }
                                 )}
                               </MDBCol>
@@ -359,7 +398,19 @@ function ProductDetail() {
         </div>
       </MDBContainer>
 
-      {/*  */}
+       {product?.shopid!==userid  && <div style={{position:"fixed", right:"20px",bottom:"40px",display:"flex",flexDirection:"column"}}>
+          <div>
+            <MDBIcon far icon="comment" size="2x"/>
+          </div>
+          <div style={{cursor:"pointer",color:"blue"}} 
+            onClick={()=>{
+              navigate(`/profile-other?key=${product.shopid}`)
+              window.scrollTo(0,0)
+            }}
+          >
+            Liên hệ chủ cửa hàng
+          </div>
+      </div>}
     </div>
   );
 }

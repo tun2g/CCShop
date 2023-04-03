@@ -21,7 +21,7 @@ function Chat(props) {
   const id=useSelector(selectId)
   const avatar=useSelector(selectAvatar)
   const name=useSelector(selectName)
-  console.log("name",name)
+
   useEffect(() => {
     
     const chatRoom=props.user._id<id?
@@ -50,8 +50,8 @@ function Chat(props) {
   }, [socket]);
 
   const handleMessageSubmit = () => {
-    socket.emit("message", {message:input,sender:id,receiver:props.user._id});
-    socket.emit("notifyMessage",{receiver:props.user._id,sender:id,name:name,avatar})
+    socket.emit("message", {message:input,sender:id,receiver:props.user._id,type:"message"});
+    socket.emit("notifyMessage",{receiver:props.user._id,sender:id,name:name,avatar,type:"message"})
     setInput("");
   };
 
@@ -73,7 +73,7 @@ function Chat(props) {
               <MDBCardBody>
                 <ScrollbarComponent>
 
-                  
+
 
                   {messages?.map((message, index) => {
                     if(message.sender!==id)

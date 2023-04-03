@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux"
 import { MDBCard,
     MDBCardImage,
     MDBCol,
@@ -12,6 +11,7 @@ import { MDBCard,
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { privateEmail } from "../../utils/function"
+import { useNavigate } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import Chat from "../Chat"
 const ProfileOther=()=>{
@@ -19,6 +19,7 @@ const ProfileOther=()=>{
     const [list,setList]=useState([])
     const [chat,setChat]=useState(false)
     const [loadProduct,setLoadProduct]=useState(false)
+    const navigate = useNavigate()
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("key");
@@ -77,7 +78,7 @@ const ProfileOther=()=>{
               <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
                 
                 <div className="d-flex justify-content-end text-center py-1">
-                  <div onClick={()=>setChat(true)}>
+                  <div onClick={()=>setChat(true)} style={{cursor:"pointer"}}>
                     <MDBIcon far icon="comment" size="2x"/>
                     <MDBCardText className="small text-muted mb-0">Liên hệ</MDBCardText>
                   </div>
@@ -109,11 +110,17 @@ const ProfileOther=()=>{
                     return(
                       <MDBRow key={index}>
                       <MDBCol className="mb-2">
-                        <MDBCardImage src={pro.imageurl}
+                        <MDBCardImage src={pro.imageurl} style={{cursor:"pointer"}} onClick={()=>{
+                            navigate(`/product?key=${pro._id}`)
+                            window.scrollTo(0,0)
+                        }}
                           alt="image 1" className="w-100 rounded-3" />
                       </MDBCol>
                       {list[index+1]&&<MDBCol className="mb-2">
-                        <MDBCardImage src={list[index+1].imageurl}
+                        <MDBCardImage src={list[index+1].imageurl} style={{cursor:"pointer"}}  onClick={()=>{
+                            navigate(`/product?key=${list[index+1]._id}`)
+                            window.scrollTo(0,0)
+                        }}
                           alt="image 1" className="w-100 rounded-3" />
                       </MDBCol>}
                     </MDBRow> 
