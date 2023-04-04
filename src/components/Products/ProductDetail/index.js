@@ -51,6 +51,10 @@ function ProductDetail() {
   // handle new comment => useSelect
   const [newComments, setNewComment] = useState(false);
 
+  //feedback
+  const [feedback,setFeedback]=useState()
+
+  const [feedbackContent,setFeedbackContent]=useState('')
 
   const bounce = useDebounce(rating, 1000);
 
@@ -130,6 +134,37 @@ function ProductDetail() {
       });
   };
 
+  const handleFeedback=(id)=>{
+    if(feedbackContent!==''){
+
+      axios.post(`${process.env.REACT_APP_SERVER_API_URI}/review/update/${product._id}`,{
+        avatarshop:avatar,
+        feedback:feedbackContent,
+        shopname:name,
+        userid:id
+      },{
+        headers:{
+          "Content-Type":"application/json"
+        }
+      })
+      .then(res=>{
+        setFeedbackContent('')
+        setNewComment(!newComments)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+      socket.emit("notifyMessage",{
+        sender:userid,  // shop
+        name,                 
+        receiver:id, // user's comment
+        type:"feedback",
+        avatar,
+        product:product._id
+      })
+
+    }
+  }
   const handleReview = () => {
     if(rating !== 0){
 
@@ -341,7 +376,7 @@ function ProductDetail() {
           <h5>Dánh sách đánh giá</h5>
           <MDBRow className="p-1">
             <MDBCol>
-              {listComments?.map((comment) => {
+              {listComments?.map((comment,index) => {
                 return (
                   <MDBCard key={comment._id} className="p-1 mt-2">
                     <MDBRow>
@@ -364,7 +399,7 @@ function ProductDetail() {
                             />
                           </MDBCol>
                           <MDBCol className="col-7">
-                            <MDBRow>{comment.userid.username}</MDBRow>
+                            <MDBRow style={{fontWeight:"bold"}}>{comment.userid.username}</MDBRow>
                             <MDBRow style={{ color: "red" }}>
                               <MDBCol>
                                 {[...Array(comment?.rating)]?.map(
@@ -388,16 +423,77 @@ function ProductDetail() {
                       </MDBCol>
                       <MDBCol className="col-1">
                         <MDBIcon fas icon="heart" className="mt-3"/>
+
+                        {/* Shop */}
+                        {
+                        product.shopid===userid
+                        &&!comment.feedback
+                        && 
+                        <div className="mt-3" style={{cursor:"pointer",color:"blue"}}
+                          onClick={()=>(setFeedback(index))}
+                        >
+                          Phản hồi
+                        </div>
+                        } 
+
                       </MDBCol>
                     </MDBRow>
+                      
+                    {/* Shop and User */}
+                    { comment.feedback&&
+                      <MDBRow className="mt-4" > 
+                        <MDBCol className="col-1">
+
+                        </MDBCol>
+                        <MDBCol className="col-10" style={{border:"0.1px solid #eee",borderRadius:"3px"}}>
+                          <MDBRow>
+
+                          <MDBCol className="col-1" >
+                              <MDBCardImage src={comment.avatarshop} width="60px"  style={{borderRadius:"50%"}}/>
+                          </MDBCol>
+                          <MDBCol className="col-10">
+                            <MDBRow style={{fontWeight:"bold"}}>
+                              {comment.shopname}
+                            </MDBRow>
+                            <MDBRow>
+
+                              {comment.feedback}
+                            </MDBRow>
+                          </MDBCol>
+                          </MDBRow>
+
+                        </MDBCol>
+                    </MDBRow>
+
+                    }
+                    {
+                    product.shopid===userid&&index===feedback&&
+                    <MDBRow className="mt-4"> 
+                        <MDBCol className="col-1">
+
+                        </MDBCol>
+                        <MDBCol className="col-10">
+                          <MDBInput value={feedbackContent} onChange={(e)=>setFeedbackContent(e.target.value)}>
+                            
+                          </MDBInput>
+                        </MDBCol>
+                        <MDBCol className="col-1">
+                            <button className="btn btn-primary" style={{padding:"3px 10px"}} 
+                              onClick={()=>handleFeedback(comment.userid._id)}
+                            >gửi</button>
+                        </MDBCol>
+                    </MDBRow>
+                    }
                   </MDBCard>
+
                 );
               })}
             </MDBCol>
           </MDBRow>
         </div>
       </MDBContainer>
-
+      
+      {/* User */}
        {product?.shopid!==userid  && <div style={{position:"fixed", right:"20px",bottom:"40px",display:"flex",flexDirection:"column"}}>
           <div>
             <MDBIcon far icon="comment" size="2x"/>

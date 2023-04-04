@@ -73,8 +73,6 @@ function Chat(props) {
               <MDBCardBody>
                 <ScrollbarComponent>
 
-
-
                   {messages?.map((message, index) => {
                     if(message.sender!==id)
                     return (
@@ -135,7 +133,7 @@ function Chat(props) {
                 <a className="ms-3 text-muted" href="#!">
                   <MDBIcon fas icon="smile" />
                 </a>
-                <a className="ms-3" onClick={handleMessageSubmit}>
+                <a className="ms-3" onClick={handleMessageSubmit} style={{cursor:"pointer"}}>
                   <MDBIcon fas icon="paper-plane" />
                 </a>
               </MDBCardFooter>
