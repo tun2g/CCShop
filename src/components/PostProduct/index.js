@@ -1,10 +1,14 @@
 import styles from './PostProduct.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useRef, useState } from 'react';
+import {useState } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import { selectId } from '../../ReduxService/UserSlice';
+import { useNavigate } from 'react-router-dom';
+
 
 const cx = classNames.bind(styles);
 function PostProduct() {
@@ -14,9 +18,17 @@ function PostProduct() {
         formState: { errors },
     } = useForm();
 
+
+    const navigate=useNavigate()
+
     const shopid = useSelector(selectId)
-    const [imagePath,setImagePath]=useState()
-   
+    const [imagePath,setImagePath]=useState('')
+    const  [description,setDescripstion]=useState('')
+    
+    const handleChangeDescription=(value)=>{
+        setDescripstion(value)
+    }
+
 
     const handleFileUpload = (e) => {
         const uploadData = new FormData();
@@ -33,7 +45,9 @@ function PostProduct() {
       }
     
     const onSubmit = (product) => {
+        console.log(description)
         product.file=imagePath
+        product.description=description
         product.shopid=shopid
         axios.post(`${process.env.REACT_APP_SERVER_API_URI}/product/upload`, product,{
             headers: {
@@ -41,7 +55,8 @@ function PostProduct() {
             },
         })
         .then(response => {
-            console.log("res",response.data)
+            navigate('/')
+            window.scrollTo(0,0)            
         })
         .catch(error => {
             console.error(error);
@@ -49,40 +64,38 @@ function PostProduct() {
     };
 
     return (
-        <div className={cx('login')}>
             <div className={cx('wrapper')}>
-
                 
                 <div className={cx('title')}>
                     <h2>ĐĂNG BÁN SẢN PHẨM</h2>
                 </div>
+
+                
                 <div className={cx('content')}>
 
-                    <input type='file' onChange={(e) => handleFileUpload(e)} />
+                    <input placeholder='Hình ảnh' type='file' onChange={(e) => handleFileUpload(e)}/>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
 
-                        {/* <label>Họ tên</label> */}
                         <div className={cx('input-error')}>
                             <input placeholder="Tên sản phẩm" {...register('name', { required: true,minLength:6 })} />
-                            <p>{errors?.name?.type 
+                            <p className={cx('err')}>{errors?.name?.type 
                                 === 'required' 
                                 ? 'Không được bỏ trống' 
                                 : errors.shopname?.type === 'minLength'
                                 ? 'Tên phải có từ 6 kí tự'
                                 : ''}</p>
                         </div>
-                        
                         <div className={cx('input-error')}>
                             <input
-                                placeholder="Mô tả sản phẩm"
-                                {...register('description', {
+                                placeholder="Giới thiệu sản phẩm"
+                                {...register('introduction', {
                                     required: true,
                                     minLength: 8,
                                     
                                 })}
                             />
-                            <p>
+                            <p className={cx('err')}>
                                 {errors?.description?.type === 'required'
                                     ? 'Không được bỏ trống'
                                     : errors.description?.type==='minLenght'
@@ -91,13 +104,26 @@ function PostProduct() {
                                 }
                             </p>
                         </div>
+                        <div className={cx('detail','mb-5')}> 
+                            <div>
+                                <ReactQuill
+                                    onChange={handleChangeDescription}
+                                    theme='snow'
+                                    value={description}
+                                    formats={formats} 
+                                    placeholder='Mô tả sản phẩm'
+                                    />
+                            </div>
+
+                        </div>
+                        
                         {/* <label>Address</label> */}
                         <div className={cx('input-error')}>
                             <input
                                 placeholder="Nhập giá sản phẩm"
                                 {...register('price', { required: true, minLength: 1 })}
                             />
-                            <p>
+                            <p className={cx('err')}>
                                 {errors.price?.type === 'required'
                                     ? 'Không được bỏ trống'
                                     : ''}
@@ -110,22 +136,55 @@ function PostProduct() {
                                 placeholder="Nhập số lượng sản phẩm"
                                 {...register('quantity', { required: true, minLength: 1 })}
                             />
-                            <p>
+                            <p className={cx('err')}>
                                 {errors.quantity?.type === 'required'
                                     ? 'Không được bỏ trống'
                                     : ''}
                             </p>
                         </div>
+                        <div>
+                            <div className='col-5'>
 
-                        <button className={cx('submit')} type="submit">
-                            ĐĂNG KÝ
-                        </button>
+                            </div>
+                            <div className='col-3'>
+                            <button  className={cx('submit')} type="submit">
+                                ĐĂNG SẢN PHẨM
+                            </button>
+
+                            </div>
+                        </div>
                         
                     </form>
                 </div>
+
+                
             </div>
-        </div>
     );
 }
 
 export default PostProduct;
+
+
+const formats = [
+  'header',
+  'header1',
+  'header2',
+  'header3',
+  'header4',
+  'header5',
+  'header6',
+  'heading',
+  'font',
+  'size',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'link',
+  'image',
+  'color'  // thêm thuộc tính định dạng "color"
+];

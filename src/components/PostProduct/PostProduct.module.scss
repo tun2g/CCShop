@@ -1,15 +1,9 @@
-.login {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .wrapper {
     animation: opacityChange 0.3s linear;
-    width: 600px;
-    height: 600px;
+    width: 90%;
+    min-height: 1000px;
     padding: 10px;
     background-color: rgb(255, 255, 255, 0.6);
     display: flex;
@@ -17,6 +11,7 @@
     flex-direction: column;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
     position: relative;
+    margin-top: 50px;
 }
 
 .title {
@@ -46,16 +41,21 @@
         flex-direction: column;
     }
 
-    p {
+    .err {
         color: red;
         font-size: 14px;
         position: absolute;
+    }
+    .detail{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
     }
 }
 
 .input-error {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     input {
         width: 100%;
         font-size: 18px;
@@ -130,11 +130,6 @@
         }
     }
 
-    .google {
-        span {
-            font-size: 14px;
-        }
-    }
 
     .signup {
         font-size: 14px;

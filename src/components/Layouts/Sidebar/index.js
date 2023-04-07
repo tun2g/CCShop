@@ -1,8 +1,8 @@
 import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
-import { NavLink, useLocation} from 'react-router-dom';
-import { useEffect, useState } from 'react';
-
+import {useLocation} from 'react-router-dom';
+import { useEffect} from 'react';
+import NavLink from '../CustomNavLink';
 import { useSelector } from 'react-redux';
 import { selectId } from '../../../ReduxService/UserSlice';
 

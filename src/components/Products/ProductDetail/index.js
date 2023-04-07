@@ -20,6 +20,7 @@ import { useDebounce } from "../../../utils/service";
 import { useNavigate } from "react-router-dom";
 import { SocketContext } from "../../../SocketService";
 import { useContext } from "react";
+import parse from 'html-react-parser'
 function ProductDetail() {
 
   const location = useLocation();
@@ -31,6 +32,8 @@ function ProductDetail() {
   const name=useSelector(selectName)
 
   const navigate=useNavigate()
+
+  let domParser = new DOMParser();
   
   const keyProduct = searchParams.get("key");
 
@@ -217,7 +220,7 @@ function ProductDetail() {
                     </div>
                   </MDBCol>
                   <MDBCol md="6">
-                    <h5>Name</h5>
+                    <h5>{product?.name}</h5>
                     <div className="d-flex flex-row">
                       <div className="text-danger mb-1 me-2">
                         <MDBIcon fas icon="star" />
@@ -227,31 +230,10 @@ function ProductDetail() {
                       </div>
                       <span>145</span>
                     </div>
-                    <div className="mt-1 mb-0 text-muted small">
-                      <span>100% cotton</span>
-                      <span className="text-primary"> • </span>
-                      <span>Light weight</span>
-                      <span className="text-primary"> • </span>
-                      <span>
-                        Best finish
-                        <br />
-                      </span>
-                    </div>
-                    <div className="mb-2 text-muted small">
-                      <span>Unique design</span>
-                      <span className="text-primary"> • </span>
-                      <span>For women</span>
-                      <span className="text-primary"> • </span>
-                      <span>
-                        Casual
-                        <br />
-                      </span>
-                    </div>
-                    <p className="text-truncate mb-4 mb-md-0">Des</p>
-                    <h4 className="mb-1 me-1">$17.99</h4>
-                    <span className="text-danger">
-                      <s>$25.99</s>
-                    </span>
+
+                    <p className=" mt-5 mb-4 mb-md-0">{product?.introduction}</p>
+                    <h4 className="mt-2 mb-1 me-1">{product?.price} đồng</h4>
+
                   </MDBCol>
                   <MDBCol
                     md="6"
@@ -307,41 +289,12 @@ function ProductDetail() {
       <div className="container mt-5 " style={{backgroundColor:"white"}}>
         <div className="row">
           <div className="col-10">
-            <div className="row  border shadow-0 rounded-3">
-              <h1 className="mt-2">Mô tả sản phẩm</h1>
-              <p>
-                Chào mừng bạn đến cửa hàng Fine chính thức. Hàng hóa trong cửa
-                hàng có sẵn trong kho, và bạn có thể đặt hàng trực tiếp. Mua sắm
-                vui vẻ!
-                <br />
-                * Mẹo mua sắm:
-                <br />
-                1. Đối với câu hỏi mua sắm, vui lòng liên hệ với dịch vụ khách
-                hàng của chúng tôi.
-                <br />
-                2. Đối với sản phẩm từ Trung Quốc, các ước tính thời gian giao
-                hàng là khoảng 2-5 ngày kể từ ngày đặt hàng, thường là trong
-                vòng khoảng 10-20 ngày làm việc;
-                <br />
-                3. Tất cả các sản phẩm trong cửa hàng này đều có giá bán buôn;
-                <br />
-                4. Hoạt động trên toàn cửa hàng, giảm giá từ 5-60%;
-                <br />
-                5. nhận phiếu giảm giá trước khi đặt hàng để được Giảm giá nhiều
-                hơn (vào trang chủ cửa hàng để nhận);
-                <br />
-              </p>
+            <div className="row  border shadow-0 rounded-3 mt-3">
+              <div id="description">
+                {parse(product?.description?product.description:'')}
+              </div>
             </div>
-            <div className="row mt-5 des shadow-0 border rounded-3">
-              <h1 className="mt-2">Chi tiết sản phẩm</h1>
-              <p>
-                Chất liệu: Hợp kim + ngọc trai <br />
-                Màu sắc: Như hình <br />
-                Phong cách: Hàn Quốc & thời trang <br />
-                Nhân dịp: quà sinh nhật tiệc tùng <br />
-                Đóng gói: 1 chiếc vòng tay <br />
-              </p>
-            </div>
+
           </div>
           <div className="col-2">Quảng Cáo</div>
         </div>
