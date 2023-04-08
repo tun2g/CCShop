@@ -34,7 +34,7 @@ const setInRedis=(data)=>{
     withCredentials: true,    
   })
   .then((response) => {
-    console.log(response)
+
   })
   .catch((error) => {
     console.log(error);
@@ -47,7 +47,6 @@ const getResponseInvalidToken=(callback)=>{
     withCredentials: true,    
   })
   .then((response) => {
-    console.log("re/re",response)
     callback(response.data)
   })
   .catch((error) => {
@@ -62,7 +61,7 @@ const logOut=(e)=>{
     withCredentials: true,    
   })
   .then((response) => {
-    console.log(response)
+
   })
   .catch((error) => {
     console.log(error);

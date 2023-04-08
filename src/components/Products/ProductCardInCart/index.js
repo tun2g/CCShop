@@ -1,4 +1,4 @@
-import { useMemo,memo,useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import React from "react";
 import {
   MDBContainer,
@@ -93,33 +93,14 @@ function ProductCardInCart(props) {
                     </div>
                     <span>145</span>
                   </div>
-                  <div className="mt-1 mb-0 text-muted small">
-                    <span>100% cotton</span>
-                    <span className="text-primary"> • </span>
-                    <span>Light weight</span>
-                    <span className="text-primary"> • </span>
-                    <span>
-                      Best finish
-                      <br />
-                    </span>
-                  </div>
-                  <div className="mb-2 text-muted small">
-                    <span>Unique design</span>
-                    <span className="text-primary"> • </span>
-                    <span>For women</span>
-                    <span className="text-primary"> • </span>
-                    <span>
-                      Casual
-                      <br />
-                    </span>
-                  </div>
-                  <p className="text-truncate mb-4 mb-md-0">
-                    {props.product.description}
+
+                  <p className=" mb-4 mb-md-0">
+                    {props.product.introduction}
                   </p>
                   <div className="d-flex flex-row align-items-center mt-5">
-                    <h4 className="mb-1 me-1">${props.product.price}</h4>
+                    <h4 className="mb-1 me-1">{props.product.price}</h4>
                     <span className="text-danger">
-                      <s>$25.99</s>
+                      Đồng
                     </span>
                   </div>
                 </MDBCol>
@@ -139,7 +120,7 @@ function ProductCardInCart(props) {
                   <h6 className="text-success mt-5">{cost} đồng</h6>
                   <div className="d-flex flex-column mt-4">
                     <button className='btn btn-primary' onClick={handleDeleteCart}>
-                       a
+                       Xóa khỏi giỏ hàng
                     </button>
                   </div>
                 </MDBCol>
@@ -153,4 +134,4 @@ function ProductCardInCart(props) {
 }
 
 
-export default memo(ProductCardInCart);
+export default ProductCardInCart;

@@ -45,7 +45,6 @@ function PostProduct() {
       }
     
     const onSubmit = (product) => {
-        console.log(description)
         product.file=imagePath
         product.description=description
         product.shopid=shopid

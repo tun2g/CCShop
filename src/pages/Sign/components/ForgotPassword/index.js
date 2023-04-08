@@ -57,7 +57,6 @@ function ForgotPassword(props) {
             return s+element
         },'')
         if(parseInt(otpInput)===otp){
-            console.log("oke")
             setVefiry(true)
         }
     }
@@ -71,7 +70,6 @@ function ForgotPassword(props) {
             },
         })
         .then(res=>{
-            console.log(res.data)
             setOTP(res.data.otp)
         })
         .catch(err=>{
@@ -83,7 +81,7 @@ function ForgotPassword(props) {
     
     // Confirm password change
     const onSubmit = (user) => {
-        console.log(user)
+
         axios.post(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/reset-password`, {
             email:email,
             password:user.password
@@ -95,7 +93,7 @@ function ForgotPassword(props) {
             timeout: 5000
         })
         .then(response => {
-            console.log("res",response.data.element)
+
         })
         .catch(error => {
             console.error(error);

@@ -19,6 +19,8 @@ import RatingStar from "../RatingStar";
 import { useDebounce } from "../../../utils/service";
 import { useNavigate } from "react-router-dom";
 import { SocketContext } from "../../../SocketService";
+import { useDispatch } from "react-redux";
+import { updateTotalQuantity } from "../../../ReduxService/CartSlice";
 import { useContext } from "react";
 import parse from 'html-react-parser'
 function ProductDetail() {
@@ -26,6 +28,7 @@ function ProductDetail() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
+  const dispatch=useDispatch()
   //redux-toolkit 
   const userid = useSelector(selectId);
   const avatar = useSelector(selectAvatar)
@@ -130,7 +133,9 @@ function ProductDetail() {
         }
       )
       .then((res) => {
-        console.log(res);
+        if(res.data.status===502){
+          dispatch(updateTotalQuantity(1))
+        }
       })
       .catch((err) => {
         console.log(err);

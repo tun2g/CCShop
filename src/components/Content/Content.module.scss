@@ -23,3 +23,37 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
+
+.pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.pagination-item{
+    padding: 3px 10px;
+    border-radius: 2px;
+    font-weight: 600px;
+    margin: 5px;
+    border: #eee 1px solid;
+    &:hover{
+        background-color: blue;
+        cursor: pointer;
+        color: white;
+    }
+}
+.active{
+    background-color: blue;
+    color: white;
+}
+.ward{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    padding: 3px;
+    &:hover{
+        color: blue;
+        cursor: pointer;
+    }
+}

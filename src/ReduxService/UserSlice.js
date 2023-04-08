@@ -25,6 +25,7 @@ const userSlice = createSlice({
   }
 });
 
+
 export const { setEmail,setId,setAvatar,setName } = userSlice.actions;
 
 export const selectId = createSelector(
