@@ -47,8 +47,8 @@ const Content = () => {
 
     
     return (
-        <div className={cx('Content')}>
-            <div className={cx('content-menu')}>
+        <div className={cx('Content','mt-5')}>
+            <div className={cx('content-menu','mt-5')}>
                 <Container className={cx('menu')}>
                         {
                         listProducts?.map((element)=>{

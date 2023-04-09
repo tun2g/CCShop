@@ -9,17 +9,18 @@ import { useContext } from "react";
 import axios from "axios";
 import { SocketContext } from "../../../SocketService";
 import { useNavigate } from "react-router-dom";
-import { setId, setEmail,selectId } from "../../../ReduxService/UserSlice";
-import { selectTotalQuantity,initTotalQuantity } from "../../../ReduxService/CartSlice";
-
-
+import { setId, setEmail, selectId } from "../../../ReduxService/UserSlice";
+import {
+  selectTotalQuantity,
+  initTotalQuantity,
+} from "../../../ReduxService/CartSlice";
 
 const cx = classNames.bind(styles);
 
 function Header() {
   const dispatch = useDispatch();
   const id = useSelector(selectId);
-  const amountInCart= useSelector(selectTotalQuantity)
+  const amountInCart = useSelector(selectTotalQuantity);
   const socket = useContext(SocketContext);
 
   //click outside
@@ -64,13 +65,13 @@ function Header() {
     id === "false" ? setOptionList(lListDefault) : setOptionList(lListLogin);
 
     // id &&
-      id !== "false" &&
+    id !== "false" &&
       axios
         .get(
           `${process.env.REACT_APP_SERVER_API_URI}/cart/get-cart-by-user/${id}`
         )
         .then((res) => {
-          dispatch(initTotalQuantity(res.data.amount))
+          dispatch(initTotalQuantity(res.data.amount));
         })
         .catch((err) => {
           console.log(err);
@@ -116,159 +117,173 @@ function Header() {
   }, [socket, ref, notifyRef, accRef]);
 
   return (
-    <div className={cx("header")}>
-      <div className={cx("header-option")}>
-        {optionList.map((item) => {
-          if (item.name === "Giỏ hàng") {
+    <div>
+      <div className={cx("header")}>
+        <div className={cx("header-option")}>
+          {optionList.map((item) => {
+            if (item.name === "Giỏ hàng") {
+              return (
+                <NavLink
+                  key={item.name}
+                  className={cx("header-option-item")}
+                  to={item.path}
+                >
+                  <span>
+                    {item.name}
+
+                    {amountInCart !== 0 && (
+                      <div className={cx("noti-wrap")}>
+                        <div className={cx("number-of-cart")}>
+                          {amountInCart}
+                        </div>
+                      </div>
+                    )}
+                  </span>
+                </NavLink>
+              );
+            }
+
             return (
               <NavLink
                 key={item.name}
                 className={cx("header-option-item")}
                 to={item.path}
               >
-                <span >
-                  {item.name}
-
-                  { amountInCart !== 0  && (
-                    <div className={cx("noti-wrap")}>
-                      <div className={cx("number-of-notifications")}>
-                        {amountInCart}
-                      </div>
-                    </div>
-                  )}
-                </span>
+                <span>{item.name}</span>
               </NavLink>
             );
-          }
-
-          return (
-            <NavLink
-              key={item.name}
-              className={cx("header-option-item")}
-              to={item.path}
-            >
-              <span>{item.name}</span>
-            </NavLink>
-          );
-        })}
-      </div>
-      <div className={cx("header-option")}>
-        {optionrightList.map((item, index) =>
-          item.name === "Thông báo" ? (
-            <div key={index} className={cx("header-option-item")}>
-              <span
-                ref={notifyRef}
-                onClick={() => {
-                  setNotify(!notify);
-                  setNumberNotis(false);
-                  axios.post(
-                    `${process.env.REACT_APP_SERVER_AUTH_URI}/redis/redis-del`,
-                    { key: `numberNotify${id}` }
-                  );
-                }}
-              >
-                {item.name}
-              </span>
-              {numberNotis && numberNotis !== 0 && (
-                <div className={cx("noti-wrap")}>
-                  <div className={cx("number-of-notifications")}>
-                    {numberNotis}
-                  </div>
-                </div>
-              )}
-              {notify && (
-                <div className={cx("noti-wrap")} ref={ref}>
-                  <div
-                    className={cx("notification")}
-                    style={{ padding: "5px" }}
-                  >
-                    <h5 style={{ marginBottom: "10px", color: "black" }}>
-                      Thông báo
-                    </h5>
-                    {listNotifications?.map((noti, index) => {
-                      return (
-                        <div
-                          className={cx("wrap-item")}
-                          onClick={() => {
-                            if (noti.type === "message") {
-                              navigate(`/profile-other?key=${noti.sender}`);
-                            } else {
-                              navigate(`/product?key=${noti.product}`);
-                            }
-                            window.scrollTo(0, 0);
-                            setNotify(false);
-                          }}
-                        >
-                          <div>
-                            <img
-                              src={noti.avatar}
-                              width="30px"
-                              style={{ borderRadius: "50%" }}
-                            />
-                          </div>
-                          <div key={index} className={cx("noti-item")}>
-                            {noti.name} {noti.type}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : item.name === "Tài khoản" ? (
-            <div
-              className={cx("account", "header-option-item")}
-              key={item.name}
-            >
-              <span
-                onClick={() => {
-                  setAccountOption(!accountOption);
-                }}
-              >
-                Tài khoản
-              </span>
-              {accountOption && (
-                <div style={{ position: "relative" }}>
-                  <div className={cx("wrap-account")}>
-                    <div
-                      className={cx("item-account")}
-                      onClick={() => {
-                        navigate("/profile");
-                        window.scrollTo(0, 0);
-                        setAccountOption(false);
-                      }}
-                    >
-                      Trang cá nhân
-                    </div>
-                    <div
-                      className={cx("item-account")}
-                      onClick={() => {
-                        logOut();
-                        dispatch(setEmail(false));
-                        dispatch(setId(false));
-                        dispatch(initTotalQuantity(0))
-                        navigate("/sign");
-                        window.scrollTo(0, 0);
-                      }}
-                    >
-                      Đăng xuất
+          })}
+        </div>
+        <div className={cx("header-option")}>
+          {optionrightList.map((item, index) =>
+            item.name === "Thông báo" ? (
+              <div key={index} className={cx("header-option-item")}>
+                <span
+                  ref={notifyRef}
+                  onClick={() => {
+                    setNotify(!notify);
+                    setNumberNotis(false);
+                    axios.post(
+                      `${process.env.REACT_APP_SERVER_AUTH_URI}/redis/redis-del`,
+                      { key: `numberNotify${id}` }
+                    );
+                  }}
+                >
+                  {item.name}
+                </span>
+                {numberNotis && numberNotis !== 0 && (
+                  <div className={cx("noti-wrap")}>
+                    <div className={cx("number-of-notifications")}>
+                      {numberNotis}
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <NavLink
-              key={item.name}
-              className={cx("header-option-item")}
-              to={item.path}
-            >
-              <span>{item.name}</span>
-            </NavLink>
-          )
-        )}
+                )}
+                {notify && (
+                  <div className={cx("noti-wrap")} ref={ref}>
+                    <div
+                      className={cx("notification")}
+                      style={{ padding: "5px" }}
+                    >
+                      <h5 style={{ marginBottom: "10px", color: "black" }}>
+                        Thông báo
+                      </h5>
+                      {listNotifications?.map((noti, index) => {
+                        return (
+                          <div
+                            className={cx("wrap-item")}
+                            onClick={() => {
+                              if (noti.type === "message") {
+                                navigate(`/profile-other?key=${noti.sender}`);
+                              } else {
+                                navigate(`/product?key=${noti.product}`);
+                              }
+                              window.scrollTo(0, 0);
+                              setNotify(false);
+                            }}
+                          >
+                            <div>
+                              <img
+                                src={noti.avatar}
+                                width="30px"
+                                style={{ borderRadius: "50%" }}
+                              />
+                            </div>
+                            <div key={index} className={cx("noti-item")}>
+                              {noti.name} {noti.type}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : item.name === "Tài khoản" ? (
+              <div
+                className={cx("account", "header-option-item")}
+                key={item.name}
+              >
+                <span
+                  onClick={() => {
+                    setAccountOption(!accountOption);
+                  }}
+                >
+                  Tài khoản
+                </span>
+                {accountOption && (
+                  <div style={{ position: "relative" }}>
+                    <div className={cx("wrap-account")}>
+                      <div
+                        className={cx("item-account")}
+                        onClick={() => {
+                          navigate("/profile");
+                          window.scrollTo(0, 0);
+                          setAccountOption(false);
+                        }}
+                      >
+                        Trang cá nhân
+                      </div>
+                      <div
+                        className={cx("item-account")}
+                        onClick={() => {
+                          logOut();
+                          dispatch(setEmail(false));
+                          dispatch(setId(false));
+                          dispatch(initTotalQuantity(0));
+                          navigate("/sign");
+                          window.scrollTo(0, 0);
+                        }}
+                      >
+                        Đăng xuất
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <NavLink
+                key={item.name}
+                className={cx("header-option-item")}
+                to={item.path}
+              >
+                <span>{item.name}</span>
+              </NavLink>
+            )
+          )}
+        </div>
       </div>
+      {window.location.pathname === "/" && (
+        <div color="white" className={cx("search-bar")}>
+          <div className={cx("search-wrapper")}>
+            <div className={cx("search-area")}>
+              <input placeholder="tìm kiếm ..." />
+            </div>
+            <div className={cx("search-btn")}>
+              <div>Search</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -289,10 +304,6 @@ const lListDefault = [
   {
     name: "Trang chủ",
     path: "/",
-  },
-  {
-    name: "Giỏ hàng",
-    path: "/cart",
   },
 ];
 

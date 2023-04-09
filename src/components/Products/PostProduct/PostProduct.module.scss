@@ -102,6 +102,23 @@
     }
 }
 
+
+.file-input{
+    border: 2px black dashed;
+    height: 100px;
+    width: 100px;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #eee;
+    margin-bottom: 30px;
+    &:hover{
+        background-color: bisque;
+    }
+}
+
 @media (max-width: 991.98px) {
     .wrapper {
         width: 350px;

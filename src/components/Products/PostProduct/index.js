@@ -1,20 +1,29 @@
 import styles from './PostProduct.module.scss';
 import classNames from 'classnames/bind';
-import {useState } from 'react';
+import {useEffect, useState } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { selectId } from '../../ReduxService/UserSlice';
-import { useNavigate } from 'react-router-dom';
-
+import { selectId, setName } from '../../../ReduxService/UserSlice';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
+
+
 function PostProduct() {
+
+    const location=useLocation()
+    const searchParams = new URLSearchParams(location.search);
+    
+    const update=searchParams.get('update')
+    const _id=searchParams.get('_id')
+
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm();
 
@@ -24,7 +33,6 @@ function PostProduct() {
     const shopid = useSelector(selectId)
     const [imagePath,setImagePath]=useState('')
     const  [description,setDescripstion]=useState('')
-    
     const handleChangeDescription=(value)=>{
         setDescripstion(value)
     }
@@ -48,31 +56,82 @@ function PostProduct() {
         product.file=imagePath
         product.description=description
         product.shopid=shopid
-        axios.post(`${process.env.REACT_APP_SERVER_API_URI}/product/upload`, product,{
-            headers: {
-            'Content-Type': 'application/json',
-            },
-        })
-        .then(response => {
-            navigate('/')
-            window.scrollTo(0,0)            
-        })
-        .catch(error => {
-            console.error(error);
-        });
+        product._id=_id
+        if(update!=="true") {
+            axios.post(`${process.env.REACT_APP_SERVER_API_URI}/product/upload`, product,{
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                navigate('/')
+                window.scrollTo(0,0)            
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+        else {
+            axios.post(`${process.env.REACT_APP_SERVER_API_URI}/product/update`, product,{
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
     };
+
+    useEffect(()=>{
+        if(update === 'true')
+        {
+            axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-product/${_id}`)
+            .then(response=>{
+                setDescripstion(response.data?.description)
+                setImagePath(response.data?.imageurl)
+                setValue('name',response.data.name)
+                setValue('introduction',response.data.introduction)
+                setValue('quantity',response.data.quantity)
+                setValue('price',response.data.price)
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }
+    },[])
 
     return (
             <div className={cx('wrapper')}>
                 
                 <div className={cx('title')}>
-                    <h2>ĐĂNG BÁN SẢN PHẨM</h2>
+                    <h2>{update==="true"?"CHỈNH SỬA SẢN PHẨM":"ĐĂNG BÁN SẢN PHẨM"}</h2>
                 </div>
 
                 
                 <div className={cx('content')}>
+                    <>
+                    * Hình ảnh
+                    </>
+                    <label htmlFor='file-input' className={cx("file-input")}
 
-                    <input placeholder='Hình ảnh' type='file' onChange={(e) => handleFileUpload(e)}/>
+                        
+                    >
+                        {imagePath?
+                            <img src={imagePath} width="50px" height="50px"/>
+                            :
+                            <div>
+                                Thêm hình ảnh
+                            </div>
+                        }
+                    </label>
+                    <input id='file-input' placeholder='Hình ảnh' type='file'  
+                        onChange={(e) => handleFileUpload(e)}
+                        style={{display:"none"}}
+                    />
 
                     <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -147,7 +206,7 @@ function PostProduct() {
                             </div>
                             <div className='col-3'>
                             <button  className={cx('submit')} type="submit">
-                                ĐĂNG SẢN PHẨM
+                                {update?"CẬP NHẬT":"ĐĂNG SẢN PHẨM"}
                             </button>
 
                             </div>

@@ -16,7 +16,7 @@ function Sidebar() {
         {
             id: 1,
             name: 'Đăng bán sản phẩm',
-            path: '/shop',
+            path: `/shop?update=${false}`,
         },
         {
             id: 2,

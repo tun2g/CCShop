@@ -6,8 +6,7 @@ import styles from './Shop.module.scss';
 import RegisterShop from '../../components/RegisterShop';
 import { selectEmail } from '../../ReduxService/UserSlice';
 import axios from 'axios';
-import PostProduct from '../../components/PostProduct';
-import { useLocation } from 'react-router-dom';
+import PostProduct from '../../components/Products/PostProduct';
 const cx = classNames.bind(styles);
 
 const Shop = () => {

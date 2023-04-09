@@ -16,6 +16,7 @@ const publicRoutes = [
     { path: '/sign', component: Sign, layout: HeaderOnly },
     {path:'/cart',component:Cart,layout:UserLayout},
     // {path: '/shop/register', component: Shop,layout:HeaderOnly},
+    
     {path: '/shop' ,component:Shop,layout:ShopLayout},
     {path: '/product',component:ProductDetail,layout:UserLayout},
     {path: '/shop/list-product',component:ShopProductList,layout:ShopLayout},
