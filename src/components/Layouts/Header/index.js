@@ -46,6 +46,11 @@ function Header() {
   // hiển thị số thông báo mới
   const [numberNotis, setNumberNotis] = useState(0);
 
+  //search key value
+  const [key,setKey]= useState('')
+
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -272,13 +277,21 @@ function Header() {
           )}
         </div>
       </div>
-      {window.location.pathname === "/" && (
+      {(window.location.pathname === "/" || window.location.pathname==='/search') && (
         <div color="white" className={cx("search-bar")}>
           <div className={cx("search-wrapper")}>
             <div className={cx("search-area")}>
-              <input placeholder="tìm kiếm ..." />
+              <input placeholder="tìm kiếm ..." value={key} 
+                onChange={(e)=>{
+                    setKey(e.target.value)
+                }}
+              />
             </div>
-            <div className={cx("search-btn")}>
+            <div className={cx("search-btn")}
+              onClick={()=>{
+                navigate(`/search?key=${key}`)
+              }}
+            >
               <div>Search</div>
             </div>
           </div>
@@ -291,10 +304,6 @@ function Header() {
 export default Header;
 
 const rListDefault = [
-  {
-    name: "Kênh người bán",
-    path: "/shop",
-  },
   {
     name: "Đăng Nhập",
     path: "/sign",

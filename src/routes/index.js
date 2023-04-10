@@ -13,6 +13,7 @@ import ProfileOther from '../components/ProfileOther';
 
 const publicRoutes = [
     { path: '/', component: Home ,layout:UserLayout},
+    { path: '/search', component: Home ,layout:UserLayout},
     { path: '/sign', component: Sign, layout: HeaderOnly },
     {path:'/cart',component:Cart,layout:UserLayout},
     // {path: '/shop/register', component: Shop,layout:HeaderOnly},
