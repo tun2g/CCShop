@@ -1,5 +1,4 @@
 import {
-  MDBCardImage,
   MDBCol,
   MDBRow,
   MDBCardText,
@@ -7,21 +6,17 @@ import {
   MDBIcon,
   MDBInput,
 } from "mdb-react-ui-kit";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { memo, useState } from "react";
 import Province from "../../Province";
 
 const Information = (props) => {
   const [introInput, setIntroInput] = useState("");
   const [addressInput, setAddressInput] = useState("");
-  const [list, setList] = useState([]);
-
+  console.log("info render")
   // Address Input form
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [selectedWard, setSelectedWard] = useState(null);
-
-
 
   const [update, setUpdate] = useState(false);
   const [updateAddr, setUpdateAddress] = useState(false);
@@ -36,25 +31,7 @@ const Information = (props) => {
   };
   /**/
 
-  useEffect(()=>{
-    props.loadProduct&&getProductList()
-    
-  },[props.loadProduct])
-
-  const getProductList = () => {
-    props.user?.isShop &&
-      axios
-        .get(
-          `${process.env.REACT_APP_SERVER_API_URI}/product/get-all/${props.user._id}`
-        )
-        .then((res) => {
-          setList(res.data);
-          props.changeLoadProduct(false);
-        })
-        .then((err) => {
-          console.log(err);
-        });
-  };
+ 
   const updateIntro = () => {
     props.updateUser({ value: introInput, field: "introduction" });
     setIntroInput("");
@@ -175,35 +152,10 @@ const Information = (props) => {
             </MDBRow>
           </div>
 
-          {props.user?.isShop &&
-            list?.map((pro, index) => {
-              if (index % 2 === 0)
-                return (
-                  <MDBRow key={index}>
-                    <MDBCol className="mb-2">
-                      <MDBCardImage
-                        src={pro.imageurl}
-                        alt="image 1"
-                        className="w-100 rounded-3"
-                      />
-                    </MDBCol>
-                    {list[index + 1] && (
-                      <MDBCol className="mb-2">
-                        <MDBCardImage
-                          src={list[index + 1].imageurl}
-                          alt="image 1"
-                          className="w-100 rounded-3"
-                        />
-                      </MDBCol>
-                    )}
-                  </MDBRow>
-                );
-              else return <div key={index}></div>;
-            })}
         </div>
       </MDBCardBody>
     </>
   );
 };
 
-export default Information;
+export default memo(Information);

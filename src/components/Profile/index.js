@@ -7,18 +7,15 @@ import {
   MDBCardText,
   MDBContainer,
   MDBTypography,
-  MDBCardBody,
-  MDBIcon,
-  MDBInput,
 } from "mdb-react-ui-kit";
 import { selectId } from "../../ReduxService/UserSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ModalAvatar from "../ModalAvatar";
 import { privateEmail } from "../../utils/function";
-import Province from "../Province";
 import Information from "./Information";
-
+import ListProducts from "./ListProducts";
+import { uploadFile } from "../../utils/function";
 const Profile = () => {
   const id = useSelector(selectId);
 
@@ -63,7 +60,11 @@ const Profile = () => {
     reload && updateUser({ value: imagePath, field: "avatar" });
 
     // tải file lên Cloudiary
-    change && uploadFile();
+    change && uploadFile(imageInput,(res)=>{
+      setImagePath(res.data.file);
+      setReload(true);
+      setChange(false);
+    });
 
     axios
       .get(`${process.env.REACT_APP_SERVER_AUTH_URI}/user/auth/${id}`)
@@ -80,22 +81,7 @@ const Profile = () => {
     setImageInput(e.target.files[0]);
     setShow(true);
   };
-  const uploadFile = () => {
-    const uploadData = new FormData();
-    uploadData.append("file", imageInput, "file");
-    axios
-      .post(`${process.env.REACT_APP_SERVER_API_URI}/file/upload`, uploadData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        setImagePath(res.data.file);
-        setReload(true);
-        setChange(false);
-      })
-      .catch((err) => console.log(err));
-  };
+  
 
   const updateUser = ({ value, field }) => {
     axios
@@ -214,12 +200,15 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <Information
-                user={user}
-                changeLoadProduct={changeLoadProduct}
-                loadProduct={loadProduct}
-                updateUser={updateUser}
-              />
+              <MDBContainer>
+                <Information user={user} updateUser={updateUser} />
+
+                <ListProducts
+                  loadProduct={loadProduct}
+                  user={user}
+                  changeLoadProduct={changeLoadProduct}
+                />
+              </MDBContainer>
             </MDBCard>
           </MDBCol>
         </MDBRow>

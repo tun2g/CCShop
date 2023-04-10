@@ -9,13 +9,11 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
-import {useNavigate} from 'react-router-dom'
 import { useDebounce } from '../../../utils/service';
 import axios from 'axios';
 
 
 function ProductCardInCart(props) {
-  const navigate=useNavigate()
 
   const [quantity, setQuantity] = useState(props.cart.quantity);
   const [cost, setCost]=useState(props.cart.cost)

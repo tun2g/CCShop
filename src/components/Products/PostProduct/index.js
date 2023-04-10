@@ -8,7 +8,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { selectId, setName } from '../../../ReduxService/UserSlice';
 import { useNavigate,useLocation } from 'react-router-dom';
-
+import { uploadFile } from '../../../utils/function';
 const cx = classNames.bind(styles);
 
 
@@ -37,20 +37,6 @@ function PostProduct() {
         setDescripstion(value)
     }
 
-
-    const handleFileUpload = (e) => {
-        const uploadData = new FormData();
-        uploadData.append("file", e.target.files[0], "file");
-        axios.post(`${process.env.REACT_APP_SERVER_API_URI}/file/upload`, uploadData,{
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-            .then(res => {
-                setImagePath(res.data.file)
-            })
-            .catch(err => console.log(err))
-      }
     
     const onSubmit = (product) => {
         product.file=imagePath
@@ -129,7 +115,9 @@ function PostProduct() {
                         }
                     </label>
                     <input id='file-input' placeholder='Hình ảnh' type='file'  
-                        onChange={(e) => handleFileUpload(e)}
+                        onChange={(e) => uploadFile(e.target.files[0],(res)=>{
+                            setImagePath(res.data.file)
+                        })}
                         style={{display:"none"}}
                     />
 
