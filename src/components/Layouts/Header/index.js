@@ -20,6 +20,7 @@ const cx = classNames.bind(styles);
 function Header() {
   const dispatch = useDispatch();
   const id = useSelector(selectId);
+
   const amountInCart = useSelector(selectTotalQuantity);
   const socket = useContext(SocketContext);
 
@@ -119,7 +120,7 @@ function Header() {
       socket.emit("leaveRoom", id);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [socket, ref, notifyRef, accRef]);
+  }, [socket, ref, notifyRef, accRef,id]);
 
   return (
     <div>

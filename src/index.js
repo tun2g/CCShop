@@ -6,6 +6,7 @@ import GlobalStyles from './components/Helpers/GlobalStyles';
 import { Provider } from 'react-redux';
 import store from './ReduxService/store';
 import { SocketContext,socket } from './SocketService';
+import BeforeUnload from './components/BeforeUnload';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,6 +14,7 @@ root.render(
     <GlobalStyles>
       <SocketContext.Provider value={socket}>
         <Provider store={store}>
+          <BeforeUnload/>
           <App />
         </Provider>
       </SocketContext.Provider>

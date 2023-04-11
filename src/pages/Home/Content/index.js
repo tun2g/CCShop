@@ -5,7 +5,7 @@ import axios from '../../../utils/axios.config';
 import { useEffect, useState } from 'react';
 import { getInRedis } from '../../../utils/service';
 import { useLocation } from 'react-router-dom';
-import ProductCard from '../../../components/Products/ProductCard';
+import ProductCard from '../../../components/Products/ProductCard'
 
 const cx = classNames.bind(styles);
 const Content = () => {
@@ -37,7 +37,6 @@ const Content = () => {
     }
     useEffect(()=>{
         if(window.location.pathname==='/'){
-            console.log("aa")
             token&&axios.get(`${process.env.REACT_APP_SERVER_API_URI}/product/get-all/page/${activePage}`, {
                 headers: {
                     token: `Bearer ${token}`,
