@@ -7,7 +7,7 @@ import classNames from "classnames"
 import styles from './Cart.module.scss'
 import { Container } from "react-bootstrap"
 import { updateTotalQuantity } from "../../ReduxService/CartSlice"
-import ProductCardInCart from "../Products/ProductCardInCart"
+import ProductCardInCart from "../../components/Products/ProductCardInCart"
 
 const cx=classNames.bind(styles)
 const Cart=()=>{

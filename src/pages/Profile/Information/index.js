@@ -7,7 +7,7 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import { memo, useState } from "react";
-import Province from "../../Province";
+import Province from "../../../components/Province";
 
 const Information = (props) => {
   const [introInput, setIntroInput] = useState("");

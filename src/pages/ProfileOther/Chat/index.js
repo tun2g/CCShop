@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { SocketContext } from "../../SocketService";
-import ScrollbarComponent from "../Helpers/ScrollbarComponent";
+import { SocketContext } from "../../../SocketService";
+import ScrollbarComponent from "../../../components/Helpers/ScrollbarComponent";
 import {
   MDBContainer,
   MDBRow,
@@ -12,7 +12,7 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
-import {selectId,selectAvatar,selectName} from "../../ReduxService/UserSlice"
+import {selectId,selectAvatar,selectName} from "../../../ReduxService/UserSlice"
 import axios from "axios";
 function Chat(props) {
   const [messages, setMessages] = useState([]);

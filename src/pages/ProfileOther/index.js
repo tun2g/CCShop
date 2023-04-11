@@ -13,7 +13,8 @@ import { useEffect, useState } from "react"
 import { privateEmail } from "../../utils/function"
 import { useNavigate } from "react-router-dom"
 import { useLocation } from "react-router-dom"
-import Chat from "../Chat"
+import Chat from "./Chat"
+
 const ProfileOther=()=>{
     const [user,setUser]=useState()
     const [list,setList]=useState([])

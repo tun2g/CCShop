@@ -11,7 +11,7 @@ import {
 import { selectId } from "../../ReduxService/UserSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ModalAvatar from "../ModalAvatar";
+import ModalAvatar from "../../components/ModalAvatar";
 import { privateEmail } from "../../utils/function";
 import Information from "./Information";
 import ListProducts from "./ListProducts";

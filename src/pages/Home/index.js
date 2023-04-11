@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
-import Content from '../../components/Content';
+import Content from './Content';
 const cx = classNames.bind(styles);
 
 const Home = () => {

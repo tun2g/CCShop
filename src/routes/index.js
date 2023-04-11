@@ -6,9 +6,9 @@ import UserLayout from '../layouts/UserLayout';
 import Home from '../pages/Home';
 import Shop from '../pages/Shop';
 import Sign from '../pages/Sign';
-import Cart from '../components/Cart';
-import Profile from '../components/Profile';
-import ProfileOther from '../components/ProfileOther';
+import Cart from '../pages/Cart';
+import Profile from '../pages/Profile';
+import ProfileOther from '../pages/ProfileOther';
 
 
 const publicRoutes = [
