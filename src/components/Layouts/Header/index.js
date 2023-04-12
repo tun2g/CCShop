@@ -10,6 +10,7 @@ import axios from "axios";
 import { SocketContext } from "../../../SocketService";
 import { useNavigate } from "react-router-dom";
 import { setId, setEmail, selectId } from "../../../ReduxService/UserSlice";
+import ScrollbarComponent from "../../Helpers/ScrollbarComponent";
 import {
   selectTotalQuantity,
   initTotalQuantity,
@@ -48,9 +49,7 @@ function Header() {
   const [numberNotis, setNumberNotis] = useState(0);
 
   //search key value
-  const [key,setKey]= useState('')
-
-
+  const [key, setKey] = useState("");
 
   const navigate = useNavigate();
 
@@ -120,7 +119,7 @@ function Header() {
       socket.emit("leaveRoom", id);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [socket, ref, notifyRef, accRef,id]);
+  }, [socket, ref, notifyRef, accRef, id]);
 
   return (
     <div>
@@ -193,33 +192,39 @@ function Header() {
                       <h5 style={{ marginBottom: "10px", color: "black" }}>
                         Thông báo
                       </h5>
-                      {listNotifications?.map((noti, index) => {
-                        return (
-                          <div
-                            className={cx("wrap-item")}
-                            onClick={() => {
-                              if (noti.type === "message") {
-                                navigate(`/profile-other?key=${noti.sender}`);
-                              } else {
-                                navigate(`/product?key=${noti.product}`);
-                              }
-                              window.scrollTo(0, 0);
-                              setNotify(false);
-                            }}
-                          >
-                            <div>
-                              <img
-                                src={noti.avatar}
-                                width="30px"
-                                style={{ borderRadius: "50%" }}
-                              />
-                            </div>
-                            <div key={index} className={cx("noti-item")}>
-                              {noti.name} {noti.type}
-                            </div>
-                          </div>
-                        );
-                      })}
+                      <ScrollbarComponent>
+                        <div style={{height:"500px"}}>
+                          {listNotifications?.map((noti, index) => {
+                            return (
+                              <div
+                                className={cx("wrap-item")}
+                                onClick={() => {
+                                  if (noti.type === "message") {
+                                    navigate(
+                                      `/profile-other?key=${noti.sender}`
+                                    );
+                                  } else {
+                                    navigate(`/product?key=${noti.product}`);
+                                  }
+                                  window.scrollTo(0, 0);
+                                  setNotify(false);
+                                }}
+                              >
+                                <div>
+                                  <img
+                                    src={noti.avatar}
+                                    width="30px"
+                                    style={{ borderRadius: "50%" }}
+                                  />
+                                </div>
+                                <div key={index} className={cx("noti-item")}>
+                                  {noti.name} {noti.type}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </ScrollbarComponent>
                     </div>
                   </div>
                 )}
@@ -278,19 +283,23 @@ function Header() {
           )}
         </div>
       </div>
-      {(window.location.pathname === "/" || window.location.pathname==='/search') && (
+      {(window.location.pathname === "/" ||
+        window.location.pathname === "/search") && (
         <div color="white" className={cx("search-bar")}>
           <div className={cx("search-wrapper")}>
             <div className={cx("search-area")}>
-              <input placeholder="tìm kiếm ..." value={key} 
-                onChange={(e)=>{
-                    setKey(e.target.value)
+              <input
+                placeholder="tìm kiếm ..."
+                value={key}
+                onChange={(e) => {
+                  setKey(e.target.value);
                 }}
               />
             </div>
-            <div className={cx("search-btn")}
-              onClick={()=>{
-                navigate(`/search?key=${key}`)
+            <div
+              className={cx("search-btn")}
+              onClick={() => {
+                navigate(`/search?key=${key}`);
               }}
             >
               <div>Search</div>

@@ -9,6 +9,7 @@ import Sign from '../pages/Sign';
 import Cart from '../pages/Cart';
 import Profile from '../pages/Profile';
 import ProfileOther from '../pages/ProfileOther';
+import Report from '../pages/Report';
 
 
 const publicRoutes = [
@@ -17,7 +18,7 @@ const publicRoutes = [
     { path: '/sign', component: Sign, layout: HeaderOnly },
     {path:'/cart',component:Cart,layout:UserLayout},
     // {path: '/shop/register', component: Shop,layout:HeaderOnly},
-    
+    {path:'/report',component:Report,layout:ShopLayout},
     {path: '/shop' ,component:Shop,layout:ShopLayout},
     {path: '/product',component:ProductDetail,layout:UserLayout},
     {path: '/shop/list-product',component:ShopProductList,layout:ShopLayout},

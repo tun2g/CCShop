@@ -14,7 +14,7 @@ const ScrollbarComponent = ({ children }) => {
   return (
     <div className={cx("scroll-container")}>
       
-      <div className={cx("scroll-content")} style={{height:"300px"}} ref={contentRef}>
+      <div className={cx("scroll-content")} ref={contentRef}>
         {children}
       </div>
     </div>
